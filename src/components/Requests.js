@@ -6,8 +6,15 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 
 export default props => {
+
+    const doneOrNotStyle = props.doneAt != null
+        ? {
+           backgroundColor: '#c7e6fd' 
+        }
+        : { }
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, doneOrNotStyle]}>
             <View style={styles.checkContainer}>
                 {getCheckView(props.doneAt)}
             </View>
@@ -71,5 +78,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#4D7031',
         justifyContent: "center",
         alignItems: "center" 
+    },
+    desc: {
+        fontFamily: commonStyles.fontFamily,
+        color: commonStyles.colors.mainText,
+        fontSize: 15
     }
 })

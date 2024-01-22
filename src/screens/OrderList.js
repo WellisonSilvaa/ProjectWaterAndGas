@@ -43,6 +43,7 @@ export default class OrderList extends Component {
                         orderTime={new Date()}
                         formPayment="Cartão Crédito"
                         customerAddress="Av. Nossa senhora de Lourdes, 537"
+                        
                     />
                 </View>
             </View>
