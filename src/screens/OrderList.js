@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect} from "react";
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, FlatList } from "react-native";
 
 // Importação do moment para DATA e HORA
 import moment from "moment";
@@ -10,6 +10,29 @@ import commonStyles from "../commonStyles";
 import month from '../../assets/imgs/month.jpg'
 
 export default class OrderList extends Component {
+
+    // Definir um estado inicial //
+    state = {
+        orders: [{
+            id: Math.random(),
+            client: "Wellison",
+            product: "Galão 20L",
+            quantity: "2",
+            orderTime: new Date(),
+            formPayment: "Dinheiro",
+            customerAddress: "Av. Nossa senhora de Lourdes, 537",
+            doneAt: new Date()
+        }, {
+            id: Math.random(),
+            client: "Laura",
+            product: "Gás",
+            quantity: "1",
+            orderTime: new Date(),
+            formPayment: "Cartão de Crédito",
+            customerAddress: "Av. Nossa senhora de Lourdes, 537"
+        },]
+    }
+
     render() {
 
         // Constante com a data atual //
@@ -27,23 +50,16 @@ export default class OrderList extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.orderList}>
-                    <Requests
-                        client="Wellison"
-                        product="Galão 20L"
-                        quantity="2"
-                        orderTime={new Date()}
-                        formPayment="Dinheiro"
-                        customerAddress="Av. Nossa senhora de Lourdes, 537"
-                        doneAt={new Date()}
-                    />
-                    <Requests
-                        client="Laura"
-                        product="Gás"
-                        quantity="1"
-                        orderTime={new Date()}
-                        formPayment="Cartão Crédito"
-                        customerAddress="Av. Nossa senhora de Lourdes, 537"
-                        
+                    {/* FlatList é responsável por deixar a tela deslizar */}
+                    {/* Sendo assim ele recebe o state inicial,
+                        e pega todos itens pelo id e faz uma copia 
+                        com o operdar spread => {...item}
+                        e coloca dentro do component <Requests/>
+                    */}
+                    <FlatList
+                        data={this.state.orders}
+                        keyExtractor={item => item.id}
+                        renderItem={({item}) => <Requests {...item}/>}
                     />
                 </View>
             </View>

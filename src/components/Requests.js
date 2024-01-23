@@ -4,6 +4,9 @@ import { View, Text, StyleSheet } from "react-native";
 import commonStyles from "../commonStyles";
 import Icon from 'react-native-vector-icons/FontAwesome'
 
+import moment from "moment";
+import 'moment/locale/pt-br'
+
 
 export default props => {
 
@@ -13,6 +16,8 @@ export default props => {
         }
         : { }
 
+        const formatteDate = moment(props.orderTime).locale('pt-br').format('llll')
+
     return (
         <View style={[styles.container, doneOrNotStyle]}>
             <View style={styles.checkContainer}>
@@ -20,9 +25,8 @@ export default props => {
             </View>
             <View>
                 <Text>{props.client}</Text>
-                <Text>{props.product}</Text>
-                <Text>{props.quantity}</Text>
-                <Text>{props.orderTime + ""}</Text>
+                <Text>{props.quantity} {props.product}</Text>
+                <Text>{formatteDate}</Text>
                 <Text>{props.formPayment}</Text>
                 <Text>{props.customerAddress}</Text>
             </View>
