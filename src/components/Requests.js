@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import commonStyles from "../commonStyles";
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -20,9 +20,12 @@ export default props => {
 
     return (
         <View style={[styles.container, doneOrNotStyle]}>
-            <View style={styles.checkContainer}>
-                {getCheckView(props.doneAt)}
-            </View>
+            <Pressable
+                onPress={() => props.toggleOrder(props.id)}
+                style={styles.checkContainer}
+            >
+                    {getCheckView(props.doneAt)}
+            </Pressable>
             <View>
                 <Text>{props.client}</Text>
                 <Text>{props.quantity} {props.product}</Text>
