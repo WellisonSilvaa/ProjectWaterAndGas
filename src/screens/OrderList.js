@@ -11,12 +11,14 @@ import IconIonic from "react-native-vector-icons/Ionicons"
 import Requests from "../components/Requests";
 import commonStyles from "../commonStyles";
 import month from '../../assets/imgs/month.jpg'
+import AddOrder from "./AddOrder";
 
 export default class OrderList extends Component {
 
     // Definir um estado inicial //
     state = {
         showDoneOrders: true,
+        showAddOrders: true,
         visibleOrders: [],
         orders: [{
             id: Math.random(),
@@ -82,6 +84,9 @@ export default class OrderList extends Component {
 
         return (
             <View style={styles.container}>
+                <AddOrder
+                    isVisible={this.state.showAddOrders}
+                />
                 <ImageBackground 
                     source={month}
                     style={styles.background}    
