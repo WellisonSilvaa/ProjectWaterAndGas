@@ -18,7 +18,7 @@ export default class OrderList extends Component {
     // Definir um estado inicial //
     state = {
         showDoneOrders: true,
-        showAddOrders: true,
+        showAddOrders: false,
         visibleOrders: [],
         orders: [{
             id: Math.random(),
@@ -86,6 +86,7 @@ export default class OrderList extends Component {
             <View style={styles.container}>
                 <AddOrder
                     isVisible={this.state.showAddOrders}
+                    onCancel={() => this.setState({ showAddOrders: false})}
                 />
                 <ImageBackground 
                     source={month}
@@ -123,6 +124,21 @@ export default class OrderList extends Component {
                         renderItem={({item}) => <Requests {...item} toggleOrder={this.toggleOrder} />}
                     />
                 </View>
+                <Pressable 
+                    style={({ pressed }) => [
+                        {
+                            backgroundColor: pressed ? 'rgba(0, 0, 255, 0.6)' : 'blue'
+                        },
+                        styles.addButton
+                    ]}
+                    onPress={() => this.setState({ showAddOrders: true })}
+                >
+                    <IconIonic
+                        name="add-outline"
+                        size={35}
+                        color={commonStyles.colors.secondary}
+                    />
+                </Pressable>
             </View>
         )
     }
@@ -161,6 +177,16 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         marginTop: 60,
         marginHorizontal: 50
+    },
+    addButton: {
+        position: "absolute",
+        right: 30,
+        bottom: 30,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
 })

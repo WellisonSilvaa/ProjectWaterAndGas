@@ -1,5 +1,5 @@
 import React,{ Component } from 'react'
-import { Modal, View, StyleSheet, Pressable, Text } from 'react-native'
+import { Modal, View, StyleSheet, Pressable, Text, TextInput } from 'react-native'
 
 export default  class addOrder extends Component {
     render() {
@@ -11,14 +11,18 @@ export default  class addOrder extends Component {
                 animationType='slide'
             >
                 <Pressable
+                    style={styles.background}
                     onPress={this.props.onCancel}
                 >
-                    <View style={styles.background}>
-                        <Text style={{
-                            fontSize: 60,
-                            color: 'black'
-                        }}>Oláaaaaa</Text>
-                    </View>
+                    <Pressable
+                    // onPress={this.props.onCancel}
+                        style={styles.modalView}
+                    >
+                        <View>
+                            <TextInput/>
+                        </View>
+                        {/* <Text>Cancelar</Text> */}
+                    </Pressable>
                 </Pressable>
             </Modal>
         )
@@ -28,7 +32,22 @@ export default  class addOrder extends Component {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
         justifyContent: 'center'
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     }
 })
