@@ -127,7 +127,7 @@ export default class OrderList extends Component {
                 <Pressable 
                     style={({ pressed }) => [
                         {
-                            backgroundColor: pressed ? 'rgba(0, 0, 255, 0.6)' : 'blue'
+                            backgroundColor: pressed ? '#88A0D8' : commonStyles.colors.blueButtons
                         },
                         styles.addButton
                     ]}
