@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect} from "react";
-import { View, Text, ImageBackground, StyleSheet, FlatList, Pressable } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, FlatList, Pressable, Keyboard } from "react-native";
 
 // Importação do moment para DATA e HORA
 import moment from "moment";
@@ -77,6 +77,15 @@ export default class OrderList extends Component {
         this.setState({ orders }, this.filterOrders)
     }
 
+    // Funçao responsavel por fechar o modal ou não
+    handlePressOutsideModal = (event) => {
+        // Verifica se o evento de press aconteceu fora do conteúdo do modal
+        if (event.target === event.currentTarget) {
+          this.setState({ showAddOrders: false })
+          Keyboard.dismiss(); // Fecha o teclado ao clicar fora do modal
+        }
+      };
+
     render() {
 
         // Constante com a data atual //
@@ -86,7 +95,8 @@ export default class OrderList extends Component {
             <View style={styles.container}>
                 <AddOrder
                     isVisible={this.state.showAddOrders}
-                    onCancel={() => this.setState({ showAddOrders: false})}
+                    onCancelOutModal={this.handlePressOutsideModal}
+                    onCancel={() => this.setState({ showAddOrders: false })}
                 />
                 <ImageBackground 
                     source={month}

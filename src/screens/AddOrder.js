@@ -13,19 +13,30 @@ export default  class addOrder extends Component {
             >
                 <Pressable
                     style={styles.background}
-                    onPress={this.props.onCancel}
+                    onPress={this.props.onCancelOutModal}
                 >
-                    <Pressable
+                    <View
                     // onPress={this.props.onCancel}
                         style={styles.modalView}
                     >
-                        {/* <View style={styles.container}> */}
+                        <View style={styles.ModalContainer}>
                             <Text style={styles.header}>Novo Pedido</Text>
                             <Text>Teste de Input</Text>
                             <TextInput/>
-                        {/* </View> */}
-                        {/* <Text>Cancelar</Text> */}
-                    </Pressable>
+                            <View style={styles.buttons}>
+                                <Pressable
+                                    onPress={this.props.onCancel}
+                                >
+                                    <Text style={styles.button}>Cancelar</Text>
+                                </Pressable>
+                                <Pressable
+                                    // onPress={}
+                                >
+                                    <Text style={styles.button}>Salvar</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
                 </Pressable>
             </Modal>
         )
@@ -53,6 +64,9 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
+    ModalContainer: {
+        width: '100%'
+    },
     header: {
         width: '100%',
         fontFamily: commonStyles.fontFamily,
@@ -63,5 +77,21 @@ const styles = StyleSheet.create({
         fontSize: 18,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20
+    },
+    input: {
+        height: 40,
+        borderBottomWidth: 1, // Adiciona a linha na parte inferior
+        borderColor: 'gray',
+        marginBottom: 16, // Adicione espaço abaixo do input se necessário
+        paddingHorizontal: 10,
+    },
+    buttons: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    button: {
+        margin: 20,
+        marginRight: 30,
+        color: commonStyles.colors.blueButtons
     }
 })
