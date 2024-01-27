@@ -7,12 +7,13 @@ import { Picker } from '@react-native-picker/picker';
 const initialState = { 
     showFormPayment: false,
     client: '',
-    product: '',
+    product: 'Galão 20L',
     quantity: '',
+    orderTime: new Date(),
     formPayment: '',
     change: '',
-    creditOrDebit: '',
-    customerAdress: ''
+    creditOrDebit: 'Crédito',
+    customerAddress: ''
 }
 
 // componentDidMount = () => {
@@ -25,6 +26,15 @@ export default  class addOrder extends Component {
 
     state = {
         ...initialState
+    }
+
+    save = () => {
+        const newOrder = {
+            ...this.state
+        }
+
+        this.props.onSave && this.props.onSave(newOrder)
+        this.setState({ ...initialState })
     }
 
     changeState = () => {
@@ -79,6 +89,12 @@ export default  class addOrder extends Component {
                                     <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
                             </Picker>
                             </View>
+                            <TextInput 
+                                style={styles.input}
+                                placeholder='Endereço do cliente'
+                                onChangeText={customerAddress => this.setState({ customerAddress })}
+                                value={this.state.customerAddress}
+                            />
                             <View style={styles.modalItens}>
                             <Picker
                                 style={styles.inputPicker}
@@ -86,7 +102,7 @@ export default  class addOrder extends Component {
                                 selectedValue={this.state.formPayment}
                                 >
                                 <Picker.Item label='Dinheiro' value='Dinheiro' />
-                                <Picker.Item label='Cartao' value='Cartao' />
+                                <Picker.Item label='Cartão' value='Cartão' />
                             </Picker>
                                 <View style={{ 
                                     // backgroundColor: 'red',
@@ -153,7 +169,7 @@ export default  class addOrder extends Component {
                                     <Text style={styles.button}>Cancelar</Text>
                                 </Pressable>
                                 <Pressable
-                                    // onPress={}
+                                    onPress={this.save}
                                 >
                                     <Text style={styles.button}>Salvar</Text>
                                 </Pressable>

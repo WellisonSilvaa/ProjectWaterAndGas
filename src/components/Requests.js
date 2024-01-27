@@ -29,9 +29,14 @@ export default props => {
             <View>
                 <Text>{props.client}</Text>
                 <Text>{props.quantity} {props.product}</Text>
-                <Text>{formatteDate}</Text>
-                <Text>{props.formPayment}</Text>
                 <Text>{props.customerAddress}</Text>
+                <Text>{props.formPayment} - 
+                    {props.formPayment == 'Dinheiro'
+                        ? ' Troco = R$' + props.change
+                        : ' ' + props.creditOrDebit
+                    }
+                </Text>
+                <Text>{formatteDate}</Text>
             </View>
         </View>
     )

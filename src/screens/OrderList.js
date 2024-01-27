@@ -27,6 +27,8 @@ export default class OrderList extends Component {
             quantity: "2",
             orderTime: new Date(),
             formPayment: "Dinheiro",
+            change: '7,00',
+            creditOrDebit: '',
             customerAddress: "Av. Nossa senhora de Lourdes, 537",
             doneAt: new Date()
         }, {
@@ -35,7 +37,9 @@ export default class OrderList extends Component {
             product: "Gás",
             quantity: "1",
             orderTime: new Date(),
-            formPayment: "Cartão de Crédito",
+            formPayment: "Cartão",
+            change: '',
+            creditOrDebit: 'Crédito',
             customerAddress: "Av. Nossa senhora de Lourdes, 537",
             doneAt: null
         },]
@@ -86,6 +90,25 @@ export default class OrderList extends Component {
         }
       };
 
+    addOrder = newOrder => {
+
+        const orders = [...this.state.orders]
+        orders.push({
+            id: Math.random(),
+            client: newOrder.client,
+            product: newOrder.product,
+            quantity: newOrder.quantity,
+            orderTime: newOrder.orderTime,
+            formPayment: newOrder.formPayment,
+            change: newOrder.change,
+            creditOrDebit: newOrder.creditOrDebit,
+            customerAddress: newOrder.customerAddress,
+            doneAt: null
+        })
+        
+        this.setState({ orders, showAddOrders: false }, this.filterOrders)
+    }
+
     render() {
 
         // Constante com a data atual //
@@ -97,6 +120,7 @@ export default class OrderList extends Component {
                     isVisible={this.state.showAddOrders}
                     onCancelOutModal={this.handlePressOutsideModal}
                     onCancel={() => this.setState({ showAddOrders: false })}
+                    onSave={this.addOrder}
                 />
                 <ImageBackground 
                     source={month}
