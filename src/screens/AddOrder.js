@@ -4,6 +4,9 @@ import commonStyles from '../commonStyles'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Picker } from '@react-native-picker/picker';
 
+import  Icon  from "react-native-vector-icons/FontAwesome";
+import IconIonic from "react-native-vector-icons/Ionicons"
+
 const initialState = { 
     showFormPayment: false,
     client: '',
@@ -13,7 +16,8 @@ const initialState = {
     formPayment: '',
     change: '',
     creditOrDebit: 'Crédito',
-    customerAddress: ''
+    customerAddress: '',
+    moreRequests: false
 }
 
 // componentDidMount = () => {
@@ -43,6 +47,11 @@ export default  class addOrder extends Component {
         console.log("1 = " + this.state.showFormPayment)
     }
 
+    moreRequestsState = () => {
+        console.log("0 = " + this.state.moreRequests)
+        this.setState({ moreRequests: !this.state.moreRequests })
+        console.log("1 = " + this.state.moreRequests)
+    }
 
     render() {
         return (
@@ -88,6 +97,50 @@ export default  class addOrder extends Component {
                                     <Picker.Item label='Água c/ gás 1L' value='Água c/ gás 1L' />
                                     <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
                             </Picker>
+                            <Pressable
+                                style={{
+                                    // backgroundColor: "red",
+                                    width: '10%',
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                                onPress={() => this.setState({ moreRequests: !this.state.moreRequests })}
+                            >
+                                <IconIonic
+                                    name='add-outline'
+                                    size={30}
+                                    color={commonStyles.colors.blueButtons}
+                                />
+                            </Pressable>
+                            </View>
+                            <View style={styles.modalItens}>
+                                {
+                                    this.state.moreRequests == false
+                                    ? ''
+                                    : (
+                                       <View style={styles.modalItens}>
+                                             <TextInput 
+                                    style={[styles.input, styles.inputQuant]}
+                                    placeholder='Quantidade'
+                                    onChangeText={quantity => this.setState({ quantity })}
+                                    value={this.state.quantity}
+                                    keyboardType='numeric'
+                                />
+                                <Picker
+                                    style={styles.inputPicker}
+                                    selectedValue={this.state.product}
+                                    onValueChange={product => this.setState({ product })}
+                                >
+                                    <Picker.Item label='Galão 20L' value='Galão 20L' />
+                                    <Picker.Item label='Gás' value='Gás' />
+                                    <Picker.Item label='Água c/ gás 510ml' value='Água c/ gás 510ml' />
+                                    <Picker.Item label='Água s/ gás 510ml' value='Água s/ gás 510ml' />
+                                    <Picker.Item label='Água c/ gás 1L' value='Água c/ gás 1L' />
+                                    <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
+                            </Picker>
+                                       </View>
+                                    )
+                                }
                             </View>
                             <TextInput 
                                 style={styles.input}
