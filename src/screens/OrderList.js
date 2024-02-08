@@ -98,6 +98,8 @@ export default class OrderList extends Component {
             client: newOrder.client,
             product: newOrder.product,
             quantity: newOrder.quantity,
+            product2: newOrder.product2,
+            quantity2: newOrder.quantity2,
             orderTime: newOrder.orderTime,
             formPayment: newOrder.formPayment,
             change: newOrder.change,

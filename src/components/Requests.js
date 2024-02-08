@@ -29,6 +29,7 @@ export default props => {
             <View>
                 <Text>{props.client}</Text>
                 <Text>{props.quantity} {props.product}</Text>
+                <Text>{props.quantity2} {props.product2}</Text>
                 <Text>{props.customerAddress}</Text>
                 <Text>{props.formPayment} - 
                     {props.formPayment == 'Dinheiro'

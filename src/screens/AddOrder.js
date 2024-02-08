@@ -1,19 +1,21 @@
-import React,{ Component } from 'react'
+import React, { Component } from 'react'
 import { Modal, View, StyleSheet, Pressable, Text, TextInput } from 'react-native'
 import commonStyles from '../commonStyles'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Picker } from '@react-native-picker/picker';
 
-import  Icon  from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome";
 import IconIonic from "react-native-vector-icons/Ionicons"
 
-const initialState = { 
+const initialState = {
     showFormPayment: false,
     client: '',
     product: 'Galão 20L',
+    product2: 'Gás',
     quantity: '',
+    quantity2: '',
     orderTime: new Date(),
-    formPayment: '',
+    formPayment: 'Dinheiro',
     change: '',
     creditOrDebit: 'Crédito',
     customerAddress: '',
@@ -26,7 +28,7 @@ const initialState = {
 
 
 
-export default  class addOrder extends Component {
+export default class addOrder extends Component {
 
     state = {
         ...initialState
@@ -47,10 +49,24 @@ export default  class addOrder extends Component {
         console.log("1 = " + this.state.showFormPayment)
     }
 
+    // moreRequestsState = () => {
+    //     console.log("0 = " + this.state.moreRequests)
+    //     this.setState({ moreRequests: !this.state.moreRequests })
+    //     console.log("1 = " + this.state.moreRequests)
+    // }
+
     moreRequestsState = () => {
         console.log("0 = " + this.state.moreRequests)
-        this.setState({ moreRequests: !this.state.moreRequests })
-        console.log("1 = " + this.state.moreRequests)
+        this.setState({ moreRequests: !this.state.moreRequests }, () => {
+            console.log("1 = " + this.state.moreRequests);
+            if (!this.state.moreRequests) {
+                this.resetValues();
+            }
+        });
+    }
+
+    resetValues() {
+        this.setState({ product2: '', quantity2: '' });
     }
 
     render() {
@@ -66,19 +82,19 @@ export default  class addOrder extends Component {
                     onPress={this.props.onCancelOutModal}
                 >
                     <View
-                    // onPress={this.props.onCancel}
+                        // onPress={this.props.onCancel}
                         style={styles.modalView}
                     >
                         <Text style={styles.header}>Novo Pedido</Text>
                         <View style={styles.ModalContainer}>
-                            <TextInput 
+                            <TextInput
                                 style={styles.input}
                                 placeholder='Nome do Cliente'
                                 onChangeText={client => this.setState({ client })}
                                 value={this.state.client}
                             />
                             <View style={styles.modalItens}>
-                                <TextInput 
+                                <TextInput
                                     style={[styles.input, styles.inputQuant]}
                                     placeholder='Quantidade'
                                     onChangeText={quantity => this.setState({ quantity })}
@@ -96,73 +112,79 @@ export default  class addOrder extends Component {
                                     <Picker.Item label='Água s/ gás 510ml' value='Água s/ gás 510ml' />
                                     <Picker.Item label='Água c/ gás 1L' value='Água c/ gás 1L' />
                                     <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
-                            </Picker>
-                            <Pressable
-                                style={{
-                                    // backgroundColor: "red",
-                                    width: '10%',
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                                onPress={() => this.setState({ moreRequests: !this.state.moreRequests })}
-                            >
-                                <IconIonic
-                                    name='add-outline'
-                                    size={30}
-                                    color={commonStyles.colors.blueButtons}
-                                />
-                            </Pressable>
+                                </Picker>
+                                <Pressable
+                                    style={{
+                                        // backgroundColor: "red",
+                                        width: '10%',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}
+                                    onPress={() => this.setState({ moreRequests: !this.state.moreRequests })}
+                                >
+                                    <IconIonic
+                                        name={this.state.moreRequests == false
+                                            ? 'add-outline'
+                                            : 'remove-outline'
+                                        }
+                                        size={30}
+                                        color={commonStyles.colors.blueButtons}
+                                    />
+                                </Pressable>
                             </View>
                             <View style={styles.modalItens}>
                                 {
-                                    this.state.moreRequests == false
-                                    ? ''
-                                    : (
-                                       <View style={styles.modalItens}>
-                                             <TextInput 
-                                    style={[styles.input, styles.inputQuant]}
-                                    placeholder='Quantidade'
-                                    onChangeText={quantity => this.setState({ quantity })}
-                                    value={this.state.quantity}
-                                    keyboardType='numeric'
-                                />
-                                <Picker
-                                    style={styles.inputPicker}
-                                    selectedValue={this.state.product}
-                                    onValueChange={product => this.setState({ product })}
-                                >
-                                    <Picker.Item label='Galão 20L' value='Galão 20L' />
-                                    <Picker.Item label='Gás' value='Gás' />
-                                    <Picker.Item label='Água c/ gás 510ml' value='Água c/ gás 510ml' />
-                                    <Picker.Item label='Água s/ gás 510ml' value='Água s/ gás 510ml' />
-                                    <Picker.Item label='Água c/ gás 1L' value='Água c/ gás 1L' />
-                                    <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
-                            </Picker>
-                                       </View>
-                                    )
+                                    this.state.moreRequests == true
+                                        ?
+                                        (<View style={styles.modalItens}>
+                                            <TextInput
+                                                style={[styles.input, styles.inputQuant]}
+                                                placeholder='Quantidade'
+                                                onChangeText={quantity2 => this.setState({ quantity2 })}
+                                                value={this.state.quantity2}
+                                                keyboardType='numeric'
+                                            />
+                                            <Picker
+                                                style={styles.inputPicker}
+                                                selectedValue={this.state.product2}
+                                                onValueChange={product2 => this.setState({ product2 })}
+                                            >
+                                                <Picker.Item label='Gás' value='Gás' />
+                                                <Picker.Item label='Galão 20L' value='Galão 20L' />
+                                                <Picker.Item label='Água c/ gás 510ml' value='Água c/ gás 510ml' />
+                                                <Picker.Item label='Água s/ gás 510ml' value='Água s/ gás 510ml' />
+                                                <Picker.Item label='Água c/ gás 1L' value='Água c/ gás 1L' />
+                                                <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
+                                            </Picker>
+                                        </View>)
+                                        : (
+                                            <View>
+                                                {/* {this.resetValues()} */}
+                                            </View>
+                                        )
                                 }
                             </View>
-                            <TextInput 
+                            <TextInput
                                 style={styles.input}
                                 placeholder='Endereço do cliente'
                                 onChangeText={customerAddress => this.setState({ customerAddress })}
                                 value={this.state.customerAddress}
                             />
                             <View style={styles.modalItens}>
-                            <Picker
-                                style={styles.inputPicker}
-                                onValueChange={formPayment => this.setState({ formPayment }, this.changeState())}
-                                selectedValue={this.state.formPayment}
+                                <Picker
+                                    style={styles.inputPicker}
+                                    onValueChange={formPayment => this.setState({ formPayment }, this.changeState())}
+                                    selectedValue={this.state.formPayment}
                                 >
-                                <Picker.Item label='Dinheiro' value='Dinheiro' />
-                                <Picker.Item label='Cartão' value='Cartão' />
-                            </Picker>
-                                <View style={{ 
+                                    <Picker.Item label='Dinheiro' value='Dinheiro' />
+                                    <Picker.Item label='Cartão' value='Cartão' />
+                                </Picker>
+                                <View style={{
                                     // backgroundColor: 'red',
                                     width: '50%',
                                     justifyContent: 'center',
                                     alignItems: 'center'
-                                    }}>
+                                }}>
                                     {this.state.showFormPayment
                                         ? (
                                             <Picker
@@ -173,7 +195,7 @@ export default  class addOrder extends Component {
                                                 <Picker.Item label='Crédito' value='credito' />
                                                 <Picker.Item label='Débito' value='debito' />
                                             </Picker>
-                                           
+
                                         )
                                         : (
                                             <TextInput
@@ -182,9 +204,9 @@ export default  class addOrder extends Component {
                                                 onChangeText={change => this.setState({ change })}
                                                 value={this.state.change}
                                                 keyboardType='numeric'
-                                        />
-                                            
-                                          )
+                                            />
+
+                                        )
                                     }
                                 </View>
                             </View>
@@ -238,8 +260,8 @@ export default  class addOrder extends Component {
 const CardPaymentMethod = () => {
     return (
         <View>
-            
-            
+
+
         </View>
     )
 }
@@ -258,8 +280,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
-          width: 0,
-          height: 3,
+            width: 0,
+            height: 3,
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
@@ -315,7 +337,7 @@ const styles = StyleSheet.create({
     },
     inputPickerChange: {
         width: '50%',
-    }, 
+    },
     inputChange: {
         height: 40,
         borderBottomWidth: 1, // Adiciona a linha na parte inferior
