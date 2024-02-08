@@ -11,7 +11,7 @@ const initialState = {
     showFormPayment: false,
     client: '',
     product: 'Galão 20L',
-    product2: 'Gás',
+    product2: '',
     quantity: '',
     quantity2: '',
     orderTime: new Date(),
@@ -44,29 +44,33 @@ export default class addOrder extends Component {
     }
 
     changeState = () => {
-        console.log("0 = " + this.state.showFormPayment)
-        this.setState({ showFormPayment: !this.state.showFormPayment })
-        console.log("1 = " + this.state.showFormPayment)
+        // console.log("Dinheiro = " + this.state.showFormPayment)
+        if (this.state.formPayment != 'Pix') {
+            this.setState({ showFormPayment: !this.state.showFormPayment })
+        }
+        // console.log(" " + this.state.showFormPayment)
     }
 
-    // moreRequestsState = () => {
-    //     console.log("0 = " + this.state.moreRequests)
-    //     this.setState({ moreRequests: !this.state.moreRequests })
-    //     console.log("1 = " + this.state.moreRequests)
-    // }
+
 
     moreRequestsState = () => {
-        console.log("0 = " + this.state.moreRequests)
         this.setState({ moreRequests: !this.state.moreRequests }, () => {
-            console.log("1 = " + this.state.moreRequests);
-            if (!this.state.moreRequests) {
+            if (this.state.moreRequests == false) {
                 this.resetValues();
+            } else {
+                this.setState({ product2: 'Gás' })
             }
         });
     }
 
     resetValues() {
         this.setState({ product2: '', quantity2: '' });
+    }
+
+    paymentPix = () => {
+        if(this.state.formPayment == 'Pix') {
+            this.setState({ creditOrDebit: '' })
+        }
     }
 
     render() {
@@ -120,7 +124,7 @@ export default class addOrder extends Component {
                                         justifyContent: 'center',
                                         alignItems: 'center'
                                     }}
-                                    onPress={() => this.setState({ moreRequests: !this.state.moreRequests })}
+                                    onPress={() => this.moreRequestsState()}
                                 >
                                     <IconIonic
                                         name={this.state.moreRequests == false
@@ -178,6 +182,7 @@ export default class addOrder extends Component {
                                 >
                                     <Picker.Item label='Dinheiro' value='Dinheiro' />
                                     <Picker.Item label='Cartão' value='Cartão' />
+                                    <Picker.Item label='Pix' value='Pix' />
                                 </Picker>
                                 <View style={{
                                     // backgroundColor: 'red',
@@ -185,8 +190,8 @@ export default class addOrder extends Component {
                                     justifyContent: 'center',
                                     alignItems: 'center'
                                 }}>
-                                    {this.state.showFormPayment
-                                        ? (
+                                    {this.state.showFormPayment ? (
+                                        this.state.formPayment === 'Cartão' ? (
                                             <Picker
                                                 style={styles.inputPickerChange}
                                                 selectedValue={this.state.creditOrDebit}
@@ -195,9 +200,9 @@ export default class addOrder extends Component {
                                                 <Picker.Item label='Crédito' value='credito' />
                                                 <Picker.Item label='Débito' value='debito' />
                                             </Picker>
-
-                                        )
-                                        : (
+                                        ) : null
+                                    ) : (
+                                        this.state.formPayment === 'Dinheiro' ? (
                                             <TextInput
                                                 style={styles.inputChange}
                                                 placeholder='Troco'
@@ -205,9 +210,17 @@ export default class addOrder extends Component {
                                                 value={this.state.change}
                                                 keyboardType='numeric'
                                             />
-
+                                        ) : (
+                                            this.state.formPayment === 'Pix' ? (
+                                                <TextInput
+                                                    style={styles.inputChange}
+                                                    placeholder='Chave Pix'
+                                                    onChangeText={pixKey => this.setState({ pixKey }, this.paymentPix)}
+                                                    value={this.state.pixKey}
+                                                />
+                                            ) : null
                                         )
-                                    }
+                                    )}
                                 </View>
                             </View>
                             {/* <GooglePlacesAutocomplete

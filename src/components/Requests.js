@@ -12,11 +12,11 @@ export default props => {
 
     const doneOrNotStyle = props.doneAt != null
         ? {
-           backgroundColor: '#c7e6fd' 
+            backgroundColor: '#c7e6fd'
         }
-        : { }
+        : {}
 
-        const formatteDate = moment(props.orderTime).locale('pt-br').format('llll')
+    const formatteDate = moment(props.orderTime).locale('pt-br').format('llll')
 
     return (
         <View style={[styles.container, doneOrNotStyle]}>
@@ -24,14 +24,20 @@ export default props => {
                 onPress={() => props.toggleOrder(props.id)}
                 style={styles.checkContainer}
             >
-                    {getCheckView(props.doneAt)}
+                {getCheckView(props.doneAt)}
             </Pressable>
             <View>
                 <Text>{props.client}</Text>
                 <Text>{props.quantity} {props.product}</Text>
-                <Text>{props.quantity2} {props.product2}</Text>
+                <View>
+                    {
+                        !props.quantity2
+                        ? <View></View>
+                        : <Text>{props.quantity2} {props.product2}</Text>
+                    }
+                </View>
                 <Text>{props.customerAddress}</Text>
-                <Text>{props.formPayment} - 
+                <Text>{props.formPayment} -
                     {props.formPayment == 'Dinheiro'
                         ? ' Troco = R$' + props.change
                         : ' ' + props.creditOrDebit
@@ -44,7 +50,7 @@ export default props => {
 }
 
 function getCheckView(doneAt) {
-    if(doneAt != null) {
+    if (doneAt != null) {
         return (
             <View style={styles.done}>
                 <Icon
@@ -55,7 +61,7 @@ function getCheckView(doneAt) {
                 </Icon>
             </View>
         )
-    }else {
+    } else {
         return (
             <View style={styles.pending}>
 
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
         borderRadius: 13,
         backgroundColor: '#4D7031',
         justifyContent: "center",
-        alignItems: "center" 
+        alignItems: "center"
     },
     desc: {
         fontFamily: commonStyles.fontFamily,
