@@ -68,7 +68,7 @@ export default class addOrder extends Component {
     }
 
     paymentPix = () => {
-        if(this.state.formPayment == 'Pix') {
+        if (this.state.formPayment == 'Pix') {
             this.setState({ creditOrDebit: '' })
         }
     }
@@ -190,37 +190,46 @@ export default class addOrder extends Component {
                                     justifyContent: 'center',
                                     alignItems: 'center'
                                 }}>
-                                    {this.state.showFormPayment ? (
-                                        this.state.formPayment === 'Cartão' ? (
-                                            <Picker
-                                                style={styles.inputPickerChange}
-                                                selectedValue={this.state.creditOrDebit}
-                                                onValueChange={creditOrDebit => this.setState({ creditOrDebit })}
-                                            >
-                                                <Picker.Item label='Crédito' value='credito' />
-                                                <Picker.Item label='Débito' value='debito' />
-                                            </Picker>
-                                        ) : null
-                                    ) : (
-                                        this.state.formPayment === 'Dinheiro' ? (
-                                            <TextInput
-                                                style={styles.inputChange}
-                                                placeholder='Troco'
-                                                onChangeText={change => this.setState({ change })}
-                                                value={this.state.change}
-                                                keyboardType='numeric'
-                                            />
-                                        ) : (
-                                            this.state.formPayment === 'Pix' ? (
-                                                <TextInput
-                                                    style={styles.inputChange}
-                                                    placeholder='Chave Pix'
-                                                    onChangeText={pixKey => this.setState({ pixKey }, this.paymentPix)}
-                                                    value={this.state.pixKey}
-                                                />
-                                            ) : null
+                                    {this.state.showFormPayment
+                                        ? (
+                                            this.state.formPayment === 'Cartão'
+                                                ? (
+                                                    <Picker
+                                                        style={styles.inputPickerChange}
+                                                        selectedValue={this.state.creditOrDebit}
+                                                        onValueChange={creditOrDebit => this.setState({ creditOrDebit })}
+                                                    >
+                                                        <Picker.Item label='Crédito' value='credito' />
+                                                        <Picker.Item label='Débito' value='debito' />
+                                                    </Picker>
+                                                )
+                                                : null
                                         )
-                                    )}
+                                        : (
+                                            this.state.formPayment === 'Dinheiro'
+                                                ? (
+                                                    <TextInput
+                                                        style={styles.inputChange}
+                                                        placeholder='Troco'
+                                                        onChangeText={change => this.setState({ change })}
+                                                        value={this.state.change}
+                                                        keyboardType='numeric'
+                                                    />
+                                                )
+                                                : (
+                                                    this.state.formPayment === 'Pix'
+                                                        ? (
+                                                            <TextInput
+                                                                style={styles.inputChange}
+                                                                placeholder='Chave Pix'
+                                                                onChangeText={pixKey => this.setState({ pixKey }, this.paymentPix)}
+                                                                value={this.state.pixKey}
+                                                            />
+                                                        )
+                                                        : null
+                                                )
+                                        )
+                                    }
                                 </View>
                             </View>
                             {/* <GooglePlacesAutocomplete

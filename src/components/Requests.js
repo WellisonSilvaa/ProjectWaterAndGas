@@ -32,15 +32,29 @@ export default props => {
                 <View>
                     {
                         !props.quantity2
-                        ? <View></View>
-                        : <Text>{props.quantity2} {props.product2}</Text>
+                            ? <View></View>
+                            : <Text>{props.quantity2} {props.product2}</Text>
                     }
                 </View>
                 <Text>{props.customerAddress}</Text>
-                <Text>{props.formPayment} -
-                    {props.formPayment == 'Dinheiro'
-                        ? ' Troco = R$' + props.change
-                        : ' ' + props.creditOrDebit
+                <Text>
+                    {props.formPayment
+                        ? (
+                            props.formPayment === "Pix"
+                                ? (
+                                    'Forma de pagamento ' + props.formPayment
+                                )
+                                : (
+                                    props.formPayment === 'Dinheiro'
+                                        ? (
+                                            'Dinheiro - Troco = R$' + props.change
+                                        )
+                                        : (
+                                            'Cartão de ' + props.creditOrDebit
+                                        )
+                                )
+                        ) 
+                        : null
                     }
                 </Text>
                 <Text>{formatteDate}</Text>
