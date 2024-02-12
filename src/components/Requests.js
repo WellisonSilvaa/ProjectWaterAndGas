@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import commonStyles from "../commonStyles";
 import Icon from 'react-native-vector-icons/FontAwesome'
+import IconIonic from "react-native-vector-icons/Ionicons"
 
 import moment from "moment";
 import 'moment/locale/pt-br'
@@ -27,19 +28,64 @@ export default props => {
                 {getCheckView(props.doneAt)}
             </Pressable>
             <View>
-                <Text>{props.client}</Text>
-                <Text>{props.quantity} {props.product}</Text>
+                <View style={styles.iconsInfo}>
+                    <IconIonic
+                        style={styles.icons}
+                        name="person-outline"
+                        size={20}
+                    />
+                    <Text>{props.client}</Text>
+                </View>
+                <View style={styles.iconsInfo}>
+                    <IconIonic
+                        style={styles.icons}
+                        name="pricetags-outline"
+                        size={20}
+                    />
+                    <Text>{props.quantity} {props.product}</Text>
+                </View>
                 <View>
                     {
                         !props.quantity2
                             ? <View></View>
-                            : <Text>{props.quantity2} {props.product2}</Text>
+                            : <View style={styles.iconsInfo}>
+                                <IconIonic
+                                    style={styles.icons}
+                                    name="pricetags-outline"
+                                    size={20}
+                                />
+                                <Text>{props.quantity2} {props.product2}</Text>
+                            </View>
                     }
                 </View>
-                <Text>{props.customerAddress}</Text>
-                <Text>
-                    {props.formPayment
-                        ? (
+                <View style={styles.iconsInfo}>
+                    <IconIonic
+                        style={styles.icons}
+                        name="location-outline"
+                        size={20}
+                    />
+                    <Text>{props.customerAddress}</Text>
+                </View>
+                <View style={styles.iconsInfo}>
+                    <IconIonic
+                        style={styles.icons}
+                        name={
+                            props.formPayment == 'Pix'
+                                ? (
+                                    'wallet-outline'
+                                )
+                                : props.formPayment == 'Dinheiro'
+                                    ? (
+                                        'cash-outline'
+                                    )
+                                    : (
+                                        'card-outline'
+                                    )
+                        }
+                        size={20}
+                    />
+                    <Text>
+                        {
                             props.formPayment === "Pix"
                                 ? (
                                     'Forma de pagamento ' + props.formPayment
@@ -53,11 +99,37 @@ export default props => {
                                             'Cartão de ' + props.creditOrDebit
                                         )
                                 )
-                        ) 
-                        : null
+
+                        }
+                    </Text>
+                </View>
+                <View style={styles.iconsInfo}>
+                    <IconIonic
+                        style={styles.icons}
+                        name="time-outline"
+                        size={20}
+                    />
+                    <Text>{formatteDate}</Text>
+                </View>
+                <View>
+                    {
+                        !props.additionalInfo
+                            ? <View></View>
+                            : <View style={styles.iconsInfo}>
+                                <IconIonic
+                                    style={styles.icons}
+                                    name="alert-outline"
+                                    size={20}
+                                    color='red'
+                                />
+                                <Text
+                                    style={{
+                                        color: 'red'
+                                    }}
+                                >{props.additionalInfo}</Text>
+                            </View>
                     }
-                </Text>
-                <Text>{formatteDate}</Text>
+                </View>
             </View>
         </View>
     )
@@ -116,5 +188,13 @@ const styles = StyleSheet.create({
         fontFamily: commonStyles.fontFamily,
         color: commonStyles.colors.mainText,
         fontSize: 15
+    },
+    iconsInfo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 4
+    },
+    icons: {
+        marginRight: 10
     }
 })

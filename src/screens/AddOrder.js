@@ -19,7 +19,8 @@ const initialState = {
     change: '',
     creditOrDebit: 'Crédito',
     customerAddress: '',
-    moreRequests: false
+    moreRequests: false,
+    additionalInfo: ''
 }
 
 // componentDidMount = () => {
@@ -190,21 +191,18 @@ export default class addOrder extends Component {
                                     justifyContent: 'center',
                                     alignItems: 'center'
                                 }}>
-                                    {this.state.showFormPayment
+                                    {this.state.formPayment === 'Cartão'
                                         ? (
-                                            this.state.formPayment === 'Cartão'
-                                                ? (
-                                                    <Picker
-                                                        style={styles.inputPickerChange}
-                                                        selectedValue={this.state.creditOrDebit}
-                                                        onValueChange={creditOrDebit => this.setState({ creditOrDebit })}
-                                                    >
-                                                        <Picker.Item label='Crédito' value='credito' />
-                                                        <Picker.Item label='Débito' value='debito' />
-                                                    </Picker>
-                                                )
-                                                : null
+                                            <Picker
+                                                style={styles.inputPickerChange}
+                                                selectedValue={this.state.creditOrDebit}
+                                                onValueChange={creditOrDebit => this.setState({ creditOrDebit })}
+                                            >
+                                                <Picker.Item label='Crédito' value='credito' />
+                                                <Picker.Item label='Débito' value='debito' />
+                                            </Picker>
                                         )
+
                                         : (
                                             this.state.formPayment === 'Dinheiro'
                                                 ? (
@@ -219,18 +217,21 @@ export default class addOrder extends Component {
                                                 : (
                                                     this.state.formPayment === 'Pix'
                                                         ? (
-                                                            <TextInput
-                                                                style={styles.inputChange}
-                                                                placeholder='Chave Pix'
-                                                                onChangeText={pixKey => this.setState({ pixKey }, this.paymentPix)}
-                                                                value={this.state.pixKey}
-                                                            />
+                                                            <View></View>
                                                         )
                                                         : null
                                                 )
                                         )
                                     }
                                 </View>
+                            </View>
+                            <View>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder='informacões adicionais'
+                                    onChangeText={additionalInfo => this.setState({ additionalInfo })}
+                                    value={this.state.additionalInfo}
+                                />
                             </View>
                             {/* <GooglePlacesAutocomplete
                                 placeholder="Pesquisar endereço"

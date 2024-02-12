@@ -105,6 +105,7 @@ export default class OrderList extends Component {
             change: newOrder.change,
             creditOrDebit: newOrder.creditOrDebit,
             customerAddress: newOrder.customerAddress,
+            additionalInfo: newOrder.additionalInfo,
             doneAt: null
         })
         
