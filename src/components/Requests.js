@@ -27,8 +27,8 @@ export default props => {
     return (
         <View style={doneOrNotStyle}>
             <Pressable
-                onPress={() => props.showsDeletOrder(props.id)}
-                onLongPress={clickLong}
+                onPress={() => {console.log('Editar')}}
+                onLongPress={() => props.showDeleteOrder(props.id)}
                 delayLongPress={500}
                 style={({ pressed }) => ({
                     backgroundColor: !pressed

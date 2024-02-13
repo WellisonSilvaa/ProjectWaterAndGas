@@ -20,7 +20,7 @@ export default class OrderList extends Component {
     state = {
         showDoneOrders: true,
         showAddOrders: false,
-        showDeletOrder: true,
+        showDeletOrder: false,
         visibleOrders: [],
         orders: [{
             id: Math.random(),
@@ -69,11 +69,11 @@ export default class OrderList extends Component {
 
         this.setState({ visibleOrders })
     }
-    
-    showsDeletOrder = orderId => {
+
+    showDeleteOrder = orderId => {
         const orders = [...this.state.orders]
 
-        this.setState({ showDeletOrders: true})
+        this.setState({ showDeletOrder: true })
 
         orders.forEach(order => {
             if (order.id === orderId) {
@@ -99,7 +99,7 @@ export default class OrderList extends Component {
     handlePressOutsideModal = (event) => {
         // Verifica se o evento de press aconteceu fora do conteúdo do modal
         if (event.target === event.currentTarget) {
-            this.setState({ showAddOrders: false })
+            this.setState({ showAddOrders: false, showDeletOrder: false })
             Keyboard.dismiss(); // Fecha o teclado ao clicar fora do modal
         }
     };
@@ -178,7 +178,11 @@ export default class OrderList extends Component {
                     <FlatList
                         data={this.state.visibleOrders}
                         keyExtractor={item => item.id}
-                        renderItem={({ item }) => <Requests {...item} toggleOrder={this.toggleOrder} showDeletOrders={this.showsDeletOrder} />}
+                        renderItem={({ item }) =>
+                            <Requests {...item}
+                                toggleOrder={this.toggleOrder}
+                                showDeleteOrder={this.showDeleteOrder}
+                            />}
                     />
                 </View>
                 {/* --------- add button order ----------- */}

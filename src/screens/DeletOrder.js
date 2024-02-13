@@ -19,7 +19,7 @@ export default class deletOrder extends Component {
                         // onPress={this.props.onCancel}
                         style={styles.modalView}
                     >
-                        <Text style={styles.header}>Novo Pedido</Text>
+                        <Text style={styles.header}>Excluir pedido ?</Text>
                         <View style={styles.ModalContainer}>
                             
                             <View style={styles.buttons}>
@@ -31,7 +31,7 @@ export default class deletOrder extends Component {
                                 <Pressable
                                     onPress={this.save}
                                 >
-                                    <Text style={styles.button}>Salvar</Text>
+                                    <Text style={styles.button}>Sim</Text>
                                 </Pressable>
                             </View>
                         </View>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     modalView: {
-        margin: 20,
+        margin: 100,
         backgroundColor: 'white',
         borderRadius: 20,
         // padding: 35,
@@ -79,19 +79,12 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20
     },
-    input: {
-        height: 40,
-        borderBottomWidth: 1, // Adiciona a linha na parte inferior
-        borderColor: 'gray',
-        margin: 15, // Adicione espaço abaixo do input se necessário
-        paddingHorizontal: 10,
-        width: '90%'
-    },
     buttons: {
         flexDirection: 'row',
         justifyContent: 'flex-end'
     },
     button: {
+        marginTop: 50,
         margin: 20,
         marginRight: 30,
         color: commonStyles.colors.blueButtons
@@ -99,27 +92,5 @@ const styles = StyleSheet.create({
     modalItens: {
         flexDirection: 'row',
         width: '100%'
-    },
-    inputProd: {
-        width: '64%'
-    },
-    inputQuant: {
-        width: '20%'
-    },
-    inputPicker: {
-        width: '40%',
-        borderColor: "black",
-        borderWidth: 5
-    },
-    inputPickerChange: {
-        width: '50%',
-    },
-    inputChange: {
-        height: 40,
-        borderBottomWidth: 1, // Adiciona a linha na parte inferior
-        borderColor: 'gray',
-        margin: 15, // Adicione espaço abaixo do input se necessário
-        paddingHorizontal: 10,
-        width: '70%'
     }
 })
