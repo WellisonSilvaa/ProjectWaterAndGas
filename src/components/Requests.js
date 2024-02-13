@@ -17,120 +17,138 @@ export default props => {
         }
         : {}
 
+
+    clickLong = () => {
+        console.log('excluir')
+    }
+
     const formatteDate = moment(props.orderTime).locale('pt-br').format('llll')
 
     return (
-        <View style={[styles.container, doneOrNotStyle]}>
+        <View style={doneOrNotStyle}>
             <Pressable
-                onPress={() => props.toggleOrder(props.id)}
-                style={styles.checkContainer}
+                onPress={() => props.showsDeletOrder(props.id)}
+                onLongPress={clickLong}
+                delayLongPress={500}
+                style={({ pressed }) => ({
+                    backgroundColor: !pressed
+                        ? 'rgba(193,193,193, 0)'
+                        : 'rgba(193,193,193, 0.5)'
+                })}
             >
-                {getCheckView(props.doneAt)}
-            </Pressable>
-            <View>
-                <View style={styles.iconsInfo}>
-                    <IconIonic
-                        style={styles.icons}
-                        name="person-outline"
-                        size={20}
-                    />
-                    <Text>{props.client}</Text>
-                </View>
-                <View style={styles.iconsInfo}>
-                    <IconIonic
-                        style={styles.icons}
-                        name="pricetags-outline"
-                        size={20}
-                    />
-                    <Text>{props.quantity} {props.product}</Text>
-                </View>
-                <View>
-                    {
-                        !props.quantity2
-                            ? <View></View>
-                            : <View style={styles.iconsInfo}>
-                                <IconIonic
-                                    style={styles.icons}
-                                    name="pricetags-outline"
-                                    size={20}
-                                />
-                                <Text>{props.quantity2} {props.product2}</Text>
-                            </View>
-                    }
-                </View>
-                <View style={styles.iconsInfo}>
-                    <IconIonic
-                        style={styles.icons}
-                        name="location-outline"
-                        size={20}
-                    />
-                    <Text>{props.customerAddress}</Text>
-                </View>
-                <View style={styles.iconsInfo}>
-                    <IconIonic
-                        style={styles.icons}
-                        name={
-                            props.formPayment == 'Pix'
-                                ? (
-                                    'wallet-outline'
-                                )
-                                : props.formPayment == 'Dinheiro'
-                                    ? (
-                                        'cash-outline'
-                                    )
-                                    : (
-                                        'card-outline'
-                                    )
-                        }
-                        size={20}
-                    />
-                    <Text>
-                        {
-                            props.formPayment === "Pix"
-                                ? (
-                                    'Forma de pagamento ' + props.formPayment
-                                )
-                                : (
-                                    props.formPayment === 'Dinheiro'
+                <View style={[styles.container]}>
+                    <Pressable
+                        onPress={() => props.toggleOrder(props.id)}
+                        style={styles.checkContainer}
+                    >
+                        {getCheckView(props.doneAt)}
+                    </Pressable>
+                    <View>
+                        <View style={styles.iconsInfo}>
+                            <IconIonic
+                                style={styles.icons}
+                                name="person-outline"
+                                size={20}
+                            />
+                            <Text>{props.client}</Text>
+                        </View>
+                        <View style={styles.iconsInfo}>
+                            <IconIonic
+                                style={styles.icons}
+                                name="pricetags-outline"
+                                size={20}
+                            />
+                            <Text>{props.quantity} {props.product}</Text>
+                        </View>
+                        <View>
+                            {
+                                !props.quantity2
+                                    ? <View></View>
+                                    : <View style={styles.iconsInfo}>
+                                        <IconIonic
+                                            style={styles.icons}
+                                            name="pricetags-outline"
+                                            size={20}
+                                        />
+                                        <Text>{props.quantity2} {props.product2}</Text>
+                                    </View>
+                            }
+                        </View>
+                        <View style={styles.iconsInfo}>
+                            <IconIonic
+                                style={styles.icons}
+                                name="location-outline"
+                                size={20}
+                            />
+                            <Text>{props.customerAddress}</Text>
+                        </View>
+                        <View style={styles.iconsInfo}>
+                            <IconIonic
+                                style={styles.icons}
+                                name={
+                                    props.formPayment == 'Pix'
                                         ? (
-                                            'Dinheiro - Troco = R$' + props.change
+                                            'wallet-outline'
+                                        )
+                                        : props.formPayment == 'Dinheiro'
+                                            ? (
+                                                'cash-outline'
+                                            )
+                                            : (
+                                                'card-outline'
+                                            )
+                                }
+                                size={20}
+                            />
+                            <Text>
+                                {
+                                    props.formPayment === "Pix"
+                                        ? (
+                                            'Forma de pagamento ' + props.formPayment
                                         )
                                         : (
-                                            'Cartão de ' + props.creditOrDebit
+                                            props.formPayment === 'Dinheiro'
+                                                ? (
+                                                    'Dinheiro - Troco = R$' + props.change
+                                                )
+                                                : (
+                                                    'Cartão de ' + props.creditOrDebit
+                                                )
                                         )
-                                )
 
-                        }
-                    </Text>
+                                }
+                            </Text>
+                        </View>
+                        <View style={styles.iconsInfo}>
+                            <IconIonic
+                                style={styles.icons}
+                                name="time-outline"
+                                size={20}
+                            />
+                            <Text>{formatteDate}</Text>
+                        </View>
+                        <View>
+                            {
+                                !props.additionalInfo
+                                    ? <View></View>
+                                    : <View style={styles.iconsInfo}>
+                                        <IconIonic
+                                            style={styles.icons}
+                                            name="alert-outline"
+                                            size={20}
+                                            color='red'
+                                        />
+                                        <Text
+                                            style={{
+                                                color: 'red'
+                                            }}
+                                        >{props.additionalInfo}</Text>
+                                    </View>
+                            }
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.iconsInfo}>
-                    <IconIonic
-                        style={styles.icons}
-                        name="time-outline"
-                        size={20}
-                    />
-                    <Text>{formatteDate}</Text>
-                </View>
-                <View>
-                    {
-                        !props.additionalInfo
-                            ? <View></View>
-                            : <View style={styles.iconsInfo}>
-                                <IconIonic
-                                    style={styles.icons}
-                                    name="alert-outline"
-                                    size={20}
-                                    color='red'
-                                />
-                                <Text
-                                    style={{
-                                        color: 'red'
-                                    }}
-                                >{props.additionalInfo}</Text>
-                            </View>
-                    }
-                </View>
-            </View>
+            </Pressable>
         </View>
     )
 }

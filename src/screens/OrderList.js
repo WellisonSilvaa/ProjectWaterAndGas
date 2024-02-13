@@ -12,6 +12,7 @@ import Requests from "../components/Requests";
 import commonStyles from "../commonStyles";
 import month from '../../assets/imgs/month.jpg'
 import AddOrder from "./AddOrder";
+import DeletOrder from "./DeletOrder";
 
 export default class OrderList extends Component {
 
@@ -19,6 +20,7 @@ export default class OrderList extends Component {
     state = {
         showDoneOrders: true,
         showAddOrders: false,
+        showDeletOrder: true,
         visibleOrders: [],
         orders: [{
             id: Math.random(),
@@ -67,6 +69,18 @@ export default class OrderList extends Component {
 
         this.setState({ visibleOrders })
     }
+    
+    showsDeletOrder = orderId => {
+        const orders = [...this.state.orders]
+
+        this.setState({ showDeletOrders: true})
+
+        orders.forEach(order => {
+            if (order.id === orderId) {
+                console.log('excluida')
+            }
+        })
+    }
 
     toggleOrder = orderId => {
         const orders = [...this.state.orders]
@@ -89,10 +103,6 @@ export default class OrderList extends Component {
             Keyboard.dismiss(); // Fecha o teclado ao clicar fora do modal
         }
     };
-
-    clickLong = () => {
-        console.log('excluir')
-    }
 
     addOrder = newOrder => {
 
@@ -129,6 +139,12 @@ export default class OrderList extends Component {
                     onCancel={() => this.setState({ showAddOrders: false })}
                     onSave={this.addOrder}
                 />
+                <DeletOrder
+                    isVisible={this.state.showDeletOrder}
+                    onCancelOutModal={this.handlePressOutsideModal}
+                    onCancel={() => this.setState({ showDeletOrder: false })}
+                    onSave={this.addOrder}
+                />
                 <ImageBackground
                     source={month}
                     style={styles.background}
@@ -159,25 +175,13 @@ export default class OrderList extends Component {
                         com o operador spread => {...item}
                         e coloca dentro do component <Requests/>
                     */}
-                    <Pressable
-                        onPress={() => console.log('editar')}
-                        onLongPress={this.clickLong}
-                        delayLongPress={500}
-                        style={({ pressed }) => ({
-                            backgroundColor: pressed && this.state.doneAt
-                                ? '#AAA'
-                                : !pressed
-                                    ? 'lightray'
-                                    : '#4D7031'
-                        })}
-                    >
-                        <FlatList
-                            data={this.state.visibleOrders}
-                            keyExtractor={item => item.id}
-                            renderItem={({ item }) => <Requests {...item} toggleOrder={this.toggleOrder} />}
-                        />
-                    </Pressable>
+                    <FlatList
+                        data={this.state.visibleOrders}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => <Requests {...item} toggleOrder={this.toggleOrder} showDeletOrders={this.showsDeletOrder} />}
+                    />
                 </View>
+                {/* --------- add button order ----------- */}
                 <Pressable
                     style={({ pressed }) => [
                         {
