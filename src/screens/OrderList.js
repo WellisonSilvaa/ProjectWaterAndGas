@@ -1,11 +1,11 @@
-import React, { Component, useState, useEffect} from "react";
+import React, { Component, useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, FlatList, Pressable, Keyboard } from "react-native";
 
 // Importação do moment para DATA e HORA
 import moment from "moment";
 import 'moment/locale/pt-br'
 
-import  Icon  from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome";
 import IconIonic from "react-native-vector-icons/Ionicons"
 
 import Requests from "../components/Requests";
@@ -56,9 +56,9 @@ export default class OrderList extends Component {
 
     filterOrders = () => {
         let visibleOrders = null
-        if(this.state.showDoneOrders) {
+        if (this.state.showDoneOrders) {
             visibleOrders = [...this.state.orders]
-        }else {
+        } else {
             // No código abaixo foi criado uma constante que vai ser responsavel por filtrar as Orders pendentes
             //Logo depois com o metodo filter vai ser passado pelo filtro apenas as Orders correspondentes ao comando, que no caso são as Orders pending, e salvo no array visibleOrders.
             const pending = order => order.doneAt === null
@@ -71,7 +71,7 @@ export default class OrderList extends Component {
     toggleOrder = orderId => {
         const orders = [...this.state.orders]
         orders.forEach(order => {
-            if(order.id === orderId) {
+            if (order.id === orderId) {
                 order.doneAt = order.doneAt
                     ? null
                     : new Date
@@ -85,10 +85,14 @@ export default class OrderList extends Component {
     handlePressOutsideModal = (event) => {
         // Verifica se o evento de press aconteceu fora do conteúdo do modal
         if (event.target === event.currentTarget) {
-          this.setState({ showAddOrders: false })
-          Keyboard.dismiss(); // Fecha o teclado ao clicar fora do modal
+            this.setState({ showAddOrders: false })
+            Keyboard.dismiss(); // Fecha o teclado ao clicar fora do modal
         }
-      };
+    };
+
+    clickLong = () => {
+        console.log('excluir')
+    }
 
     addOrder = newOrder => {
 
@@ -108,14 +112,14 @@ export default class OrderList extends Component {
             additionalInfo: newOrder.additionalInfo,
             doneAt: null
         })
-        
+
         this.setState({ orders, showAddOrders: false }, this.filterOrders)
     }
 
     render() {
 
         // Constante com a data atual //
-        const today = moment().locale('pt-br ').format('ddd, D [de] MMMM', )
+        const today = moment().locale('pt-br ').format('ddd, D [de] MMMM',)
 
         return (
             <View style={styles.container}>
@@ -125,9 +129,9 @@ export default class OrderList extends Component {
                     onCancel={() => this.setState({ showAddOrders: false })}
                     onSave={this.addOrder}
                 />
-                <ImageBackground 
+                <ImageBackground
                     source={month}
-                    style={styles.background}    
+                    style={styles.background}
                 >
                     <View style={styles.iconBar}>
                         <Pressable
@@ -135,8 +139,8 @@ export default class OrderList extends Component {
                         >
                             <Icon
                                 name={this.state.showDoneOrders
-                                ? 'eye'
-                                : 'eye-slash'
+                                    ? 'eye'
+                                    : 'eye-slash'
                                 }
                                 size={30}
                                 color={commonStyles.colors.secondary}
@@ -155,13 +159,26 @@ export default class OrderList extends Component {
                         com o operador spread => {...item}
                         e coloca dentro do component <Requests/>
                     */}
-                    <FlatList
-                        data={this.state.visibleOrders}
-                        keyExtractor={item => item.id}
-                        renderItem={({item}) => <Requests {...item} toggleOrder={this.toggleOrder} />}
-                    />
+                    <Pressable
+                        onPress={() => console.log('editar')}
+                        onLongPress={this.clickLong}
+                        delayLongPress={500}
+                        style={({ pressed }) => ({
+                            backgroundColor: pressed && this.state.doneAt
+                                ? '#AAA'
+                                : !pressed
+                                    ? 'lightray'
+                                    : '#4D7031'
+                        })}
+                    >
+                        <FlatList
+                            data={this.state.visibleOrders}
+                            keyExtractor={item => item.id}
+                            renderItem={({ item }) => <Requests {...item} toggleOrder={this.toggleOrder} />}
+                        />
+                    </Pressable>
                 </View>
-                <Pressable 
+                <Pressable
                     style={({ pressed }) => [
                         {
                             backgroundColor: pressed ? '#88A0D8' : commonStyles.colors.blueButtons
