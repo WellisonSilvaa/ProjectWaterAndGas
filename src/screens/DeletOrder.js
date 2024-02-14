@@ -2,17 +2,7 @@ import React, { Component } from "react";
 import { Modal, View, StyleSheet, Text, Pressable } from "react-native";
 import commonStyles from "../commonStyles";
 
-export default class deletOrder extends Component {
-
-    delete = () => {
-
-        const id = {
-            id: 
-        }
-
-        this.props.onDelete && this.props.onDelete()
-    }
-
+export default class DeletOrder extends Component {
     render() {
         return (
             <Modal
@@ -26,12 +16,10 @@ export default class deletOrder extends Component {
                     onPress={this.props.onCancelOutModal}
                 >
                     <View
-                        // onPress={this.props.onCancel}
                         style={styles.modalView}
                     >
                         <Text style={styles.header}>Excluir pedido ?</Text>
                         <View style={styles.ModalContainer}>
-                            
                             <View style={styles.buttons}>
                                 <Pressable
                                     onPress={this.props.onCancel}
@@ -39,7 +27,9 @@ export default class deletOrder extends Component {
                                     <Text style={styles.button}>Cancelar</Text>
                                 </Pressable>
                                 <Pressable
-                                    onPress={this.props.onDelete(this.props.id)}
+                                    onPress={() => 
+                                        this.props.onDelete()
+                                    }
                                 >
                                     <Text style={styles.button}>Sim</Text>
                                 </Pressable>
@@ -62,7 +52,6 @@ const styles = StyleSheet.create({
         margin: 100,
         backgroundColor: 'white',
         borderRadius: 20,
-        // padding: 35,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -76,7 +65,6 @@ const styles = StyleSheet.create({
     ModalContainer: {
         width: '100%',
         paddingLeft: 15,
-        // alignItems: 'center'
     },
     header: {
         width: '100%',

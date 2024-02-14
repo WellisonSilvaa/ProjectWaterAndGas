@@ -1,90 +1,66 @@
 import React, { Component, useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, FlatList, Pressable, Keyboard } from "react-native";
-
-// Importação do moment para DATA e HORA
 import moment from "moment";
 import 'moment/locale/pt-br'
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIonic from "react-native-vector-icons/Ionicons"
-
 import Requests from "../components/Requests";
 import commonStyles from "../commonStyles";
 import month from '../../assets/imgs/month.jpg'
 import AddOrder from "./AddOrder";
 import DeletOrder from "./DeletOrder";
 
+const initialState = {
+    showDoneOrders: true,
+    showAddOrders: false,
+    showDeletOrder: false,
+    idDelete: '',
+    visibleOrders: [],
+    orders: []
+}
+
 export default class OrderList extends Component {
 
-    // Definir um estado inicial //
     state = {
-        showDoneOrders: true,
-        showAddOrders: false,
-        showDeletOrder: false,
-        visibleOrders: [],
-        orders: [{
-            id: Math.random(),
-            client: "Wellison",
-            product: "Galão 20L",
-            quantity: "2",
-            orderTime: new Date(),
-            formPayment: "Dinheiro",
-            change: '7,00',
-            creditOrDebit: '',
-            customerAddress: "Av. Nossa senhora de Lourdes, 537",
-            doneAt: new Date()
-        }, {
-            id: Math.random(),
-            client: "Laura",
-            product: "Gás",
-            quantity: "1",
-            orderTime: new Date(),
-            formPayment: "Cartão",
-            change: '',
-            creditOrDebit: 'Crédito',
-            customerAddress: "Av. Nossa senhora de Lourdes, 537",
-            doneAt: null
-        },]
+        ...initialState
     }
 
-    //Essa função é chamada toda vez que o componente for montado!
-    componentDidMount = () => {
-        this.filterOrders()
+    componentDidMount = async () => {
+        const stateString = await AsyncStorage.getItem('ordersState')
+        const state = JSON.parse(stateString) || initialState
+        this.setState(state, this.filterOrders)
     }
 
-    // ------ mostra orders concluidas ou nao --------
     toogleFilter = () => {
         this.setState({ showDoneOrders: !this.state.showDoneOrders }, this.filterOrders)
     }
 
-    // ----- responsavel por mostrar apenas orders pending -----------
     filterOrders = () => {
         let visibleOrders = null
         if (this.state.showDoneOrders) {
             visibleOrders = [...this.state.orders]
         } else {
-            // No código abaixo foi criado uma constante que vai ser responsavel por filtrar as Orders pendentes
-            //Logo depois com o metodo filter vai ser passado pelo filtro apenas as Orders correspondentes ao comando, que no caso são as Orders pending, e salvo no array visibleOrders.
             const pending = order => order.doneAt === null
             visibleOrders = this.state.orders.filter(pending)
         }
-
         this.setState({ visibleOrders })
+        AsyncStorage.setItem('ordersState', JSON.stringify(this.state))
     }
 
-    // ------ mostrar modal de pergunta de exclusao -------
-    showDeleteOrder = () => {
-
-        this.setState({ showDeletOrder: true })
+    showDeleteOrder = id => {
+        const newArray = id
+        console.log(newArray)
+        this.setState({ showDeletOrder: true, idDelete: newArray })
     }
 
-    // -------- funcao responsavel por excluir uma order --------
-    onDelete = orderId =>{
-        const newOrder = this.state.orders.filter(order => order.id !== orderId)
-        this.setState({ orders: newOrder}, this.filterOrders)
+    onDelete = () => {
+        const id = this.state.idDelete
+        const orders = this.state.orders.filter(order => order.id !== id);
+        this.setState({ orders, showDeletOrder: false }, this.filterOrders);
+
     }
 
-    // ---- responsavel por mudar uma order concluida ou nao ------
     toggleOrder = orderId => {
         const orders = [...this.state.orders]
         orders.forEach(order => {
@@ -94,22 +70,17 @@ export default class OrderList extends Component {
                     : new Date
             }
         })
-
         this.setState({ orders }, this.filterOrders)
     }
 
-    // Funçao responsavel por fechar o modal de delete Order e add Order, quando clicado fora -------
     handlePressOutsideModal = (event) => {
-        // Verifica se o evento de press aconteceu fora do conteúdo do modal
         if (event.target === event.currentTarget) {
             this.setState({ showAddOrders: false, showDeletOrder: false })
-            Keyboard.dismiss(); // Fecha o teclado ao clicar fora do modal
+            Keyboard.dismiss();
         }
     };
 
-    // ---- responsavel por add order ao array de orders -------
     addOrder = newOrder => {
-
         const orders = [...this.state.orders]
         orders.push({
             id: Math.random(),
@@ -126,15 +97,11 @@ export default class OrderList extends Component {
             additionalInfo: newOrder.additionalInfo,
             doneAt: null
         })
-
         this.setState({ orders, showAddOrders: false }, this.filterOrders)
     }
 
     render() {
-
-        // Constante com a data atual //
         const today = moment().locale('pt-br ').format('ddd, D [de] MMMM',)
-
         return (
             <View style={styles.container}>
                 <AddOrder
@@ -173,12 +140,6 @@ export default class OrderList extends Component {
                     </View>
                 </ImageBackground>
                 <View style={styles.orderList}>
-                    {/* FlatList é responsável por deixar a tela deslizar */}
-                    {/* Sendo assim ele recebe o state inicial,
-                        e pega todos itens pelo id e faz uma copia 
-                        com o operador spread => {...item}
-                        e coloca dentro do component <Requests/>
-                    */}
                     <FlatList
                         data={this.state.visibleOrders}
                         keyExtractor={item => item.id}
@@ -186,11 +147,9 @@ export default class OrderList extends Component {
                             <Requests {...item}
                                 toggleOrder={this.toggleOrder}
                                 showDeleteOrder={this.showDeleteOrder}
-                                // onDelete={this.onDelete}
                             />}
                     />
                 </View>
-                {/* --------- add button order ----------- */}
                 <Pressable
                     style={({ pressed }) => [
                         {
@@ -255,5 +214,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     }
-
 })

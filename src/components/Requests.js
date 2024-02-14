@@ -1,24 +1,19 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-
 import commonStyles from "../commonStyles";
 import Icon from 'react-native-vector-icons/FontAwesome'
 import IconIonic from "react-native-vector-icons/Ionicons"
-
 import moment from "moment";
 import 'moment/locale/pt-br'
 
-
 export default props => {
-
     const doneOrNotStyle = props.doneAt != null
         ? {
             backgroundColor: '#c7e6fd'
         }
         : {}
 
-
-    clickLong = () => {
+    const clickLong = () => {
         console.log('excluir')
     }
 
@@ -27,8 +22,8 @@ export default props => {
     return (
         <View style={doneOrNotStyle}>
             <Pressable
-                onPress={() => {console.log('Editar')}}
-                onLongPress={() => props.showDeleteOrder}
+                onPress={() => { console.log('Editar') }}
+                onLongPress={() => props.showDeleteOrder(props.id)}
                 delayLongPress={500}
                 style={({ pressed }) => ({
                     backgroundColor: !pressed
