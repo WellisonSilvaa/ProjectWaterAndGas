@@ -52,10 +52,12 @@ export default class OrderList extends Component {
         this.filterOrders()
     }
 
+    // ------ mostra orders concluidas ou nao --------
     toogleFilter = () => {
         this.setState({ showDoneOrders: !this.state.showDoneOrders }, this.filterOrders)
     }
 
+    // ----- responsavel por mostrar apenas orders pending -----------
     filterOrders = () => {
         let visibleOrders = null
         if (this.state.showDoneOrders) {
@@ -70,18 +72,19 @@ export default class OrderList extends Component {
         this.setState({ visibleOrders })
     }
 
-    showDeleteOrder = orderId => {
-        const orders = [...this.state.orders]
+    // ------ mostrar modal de pergunta de exclusao -------
+    showDeleteOrder = () => {
 
         this.setState({ showDeletOrder: true })
-
-        orders.forEach(order => {
-            if (order.id === orderId) {
-                console.log('excluida')
-            }
-        })
     }
 
+    // -------- funcao responsavel por excluir uma order --------
+    onDelete = orderId =>{
+        const newOrder = this.state.orders.filter(order => order.id !== orderId)
+        this.setState({ orders: newOrder}, this.filterOrders)
+    }
+
+    // ---- responsavel por mudar uma order concluida ou nao ------
     toggleOrder = orderId => {
         const orders = [...this.state.orders]
         orders.forEach(order => {
@@ -95,7 +98,7 @@ export default class OrderList extends Component {
         this.setState({ orders }, this.filterOrders)
     }
 
-    // Funçao responsavel por fechar o modal ou não
+    // Funçao responsavel por fechar o modal de delete Order e add Order, quando clicado fora -------
     handlePressOutsideModal = (event) => {
         // Verifica se o evento de press aconteceu fora do conteúdo do modal
         if (event.target === event.currentTarget) {
@@ -104,6 +107,7 @@ export default class OrderList extends Component {
         }
     };
 
+    // ---- responsavel por add order ao array de orders -------
     addOrder = newOrder => {
 
         const orders = [...this.state.orders]
@@ -143,7 +147,7 @@ export default class OrderList extends Component {
                     isVisible={this.state.showDeletOrder}
                     onCancelOutModal={this.handlePressOutsideModal}
                     onCancel={() => this.setState({ showDeletOrder: false })}
-                    onSave={this.addOrder}
+                    onDelete={this.onDelete}
                 />
                 <ImageBackground
                     source={month}
@@ -182,6 +186,7 @@ export default class OrderList extends Component {
                             <Requests {...item}
                                 toggleOrder={this.toggleOrder}
                                 showDeleteOrder={this.showDeleteOrder}
+                                // onDelete={this.onDelete}
                             />}
                     />
                 </View>

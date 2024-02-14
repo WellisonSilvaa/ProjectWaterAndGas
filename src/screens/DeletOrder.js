@@ -3,6 +3,16 @@ import { Modal, View, StyleSheet, Text, Pressable } from "react-native";
 import commonStyles from "../commonStyles";
 
 export default class deletOrder extends Component {
+
+    delete = () => {
+
+        const id = {
+            id: 
+        }
+
+        this.props.onDelete && this.props.onDelete()
+    }
+
     render() {
         return (
             <Modal
@@ -29,7 +39,7 @@ export default class deletOrder extends Component {
                                     <Text style={styles.button}>Cancelar</Text>
                                 </Pressable>
                                 <Pressable
-                                    onPress={this.save}
+                                    onPress={this.props.onDelete(this.props.id)}
                                 >
                                     <Text style={styles.button}>Sim</Text>
                                 </Pressable>
