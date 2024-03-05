@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import OrderList from './src/screens/OrderList';
+import Auth from './src/screens/auth';
 
 import { useFonts, Lato_100Thin, Lato_400Regular, Lato_300Light } from "@expo-google-fonts/lato"
 import { useState, useCallback, useEffect } from "react"
@@ -45,7 +46,8 @@ export default function App() {
 
   return (
     <View onLayout={onLayoutRootView} style={styles.container}>
-      <OrderList/>
+      {/* <OrderList/> */}
+      <Auth/>
       <StatusBar style="auto" />
     </View>
   );
