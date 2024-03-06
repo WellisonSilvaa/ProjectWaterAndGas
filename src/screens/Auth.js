@@ -6,7 +6,8 @@ import {
     View,
     TextInput,
     Pressable,
-    Platform
+    Platform,
+    Alert
 } from 'react-native'
 
 import backgroundImage from '../../assets/imgs/login.jpg'
@@ -20,7 +21,9 @@ export default class Auth extends Component {
         email: '',
         password: '',
         confirmPassword: '',
-        stageNew: true,
+        stageNew: false,
+        showPassword: true,
+        showConfirmPassword: true
     }
 
     render() {
@@ -40,61 +43,89 @@ export default class Auth extends Component {
                     Água e Gás
                 </Text>
                 <View style={styles.formContainer}>
+                    <Text style={styles.subtitle}>
+                        {
+                            this.state.stageNew
+                                ? 'Crie sua conta'
+                                : 'Informe seus dados'
+                        }
+                    </Text>
                     {
                         this.state.stageNew &&
                         <TextInput
-                        placeholder='Nome'
-                        value={this.state.namel}
-                        onChangeText={name => this.setState({ name })}
-                        style={styles.input}
-                    />
+                            placeholder='Nome'
+                            value={this.state.name}
+                            onChangeText={name => this.setState({ name })}
+                            style={styles.input}
+                        />
                     }
                     <TextInput
                         placeholder='E-mail'
                         value={this.state.email}
                         onChangeText={email => this.setState({ email })}
                         style={styles.input}
-                        
+
                     />
-                    <View style={ styles.inputContainer}>
+                    <View style={styles.inputContainer}>
                         <TextInput
                             placeholder='Senha'
                             value={this.state.password}
                             onChangeText={password => this.setState({ password })}
+                            secureTextEntry={this.state.showPassword}
                             style={styles.inputPassword}
                         />
                         <Pressable
                             style={{
                                 width: '10%',
-                                height: 52,
                                 justifyContent: 'center',
-                                alignItems: 'center',
+                                alignItems: 'flex-start',
                                 marginHorizontal: 'auto',
                                 borderTopEndRadius: 25,
                                 borderBottomEndRadius: 25
                             }}
-                            onPress={() => console.log(ver)}
-                            
+                            onPress={() => this.setState({ showPassword: !this.state.showPassword })}
                         >
                             <Icon
-                                name={this.state.showDoneOrders
-                                    ? 'eye'
-                                    : 'eye-slash'
+                                name={this.state.showPassword
+                                    ? 'eye-slash'
+                                    : 'eye'
                                 }
-                                size={30}
+                                size={25}
                                 color='black'
                             />
                         </Pressable>
                     </View>
                     {
                         this.state.stageNew &&
-                        <TextInput
-                        placeholder='Confirmar senha'
-                        value={this.state.confirmPassword}
-                        onChangeText={confirmPassword => this.setState({ confirmPassword })}
-                        secureTextEntry={true}
-                        style={styles.input}
-                    />
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                placeholder='Confirmar senhar'
+                                value={this.state.confirmPassword}
+                                onChangeText={confirmPassword => this.setState({ confirmPassword })}
+                                secureTextEntry={this.state.showConfirmPassword}
+                                style={styles.inputPassword}
+                            />
+                            <Pressable
+                                style={{
+                                    width: '10%',
+                                    justifyContent: 'center',
+                                    alignItems: 'flex-start',
+                                    marginHorizontal: 'auto',
+                                    borderTopEndRadius: 25,
+                                    borderBottomEndRadius: 25
+                                }}
+                                onPress={() => this.setState({ showConfirmPassword: !this.state.showConfirmPassword })}
+                            >
+                                <Icon
+                                    name={this.state.showConfirmPassword
+                                        ? 'eye-slash'
+                                        : 'eye'
+                                    }
+                                    size={25}
+                                    color='black'
+                                />
+                            </Pressable>
+                        </View>
                     }
                     <Pressable
                         onPress={() => {
@@ -105,19 +136,29 @@ export default class Auth extends Component {
                             <Text
                                 style={styles.buttonText}
                             >
-                                Entrar
+                                {
+                                    this.state.stageNew
+                                        ? 'Cadastrar'
+                                        : 'Entrar'
+                                }
                             </Text>
                         </View>
                     </Pressable>
-                    <Pressable
+                </View>
+                <Pressable
                         style={styles.buttonSignup}
                         onPress={() => {
-                            console.log('Cadastro')
+                            this.setState({ stageNew: !this.state.stageNew })
                         }}
                     >
-                        <Text style={styles.buttonText}>Cadastrar</Text>
+                        <Text style={styles.buttonText}>
+                            {
+                                this.state.stageNew
+                                    ? 'Logar'
+                                    : 'Cadastrar'
+                            }
+                        </Text>
                     </Pressable>
-                </View>
             </ImageBackground>
         )
     }
@@ -136,6 +177,13 @@ const styles = StyleSheet.create({
         fontSize: 70,
         marginBottom: 10
     },
+    subtitle: {
+        fontFamily: commonStyles.fontFamily,
+        color: commonStyles.colors.secondary,
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 10
+    },
     formContainer: {
         backgroundColor: 'rgba(0,0,0, 0.4)',
         padding: 20,
@@ -150,6 +198,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         paddingLeft: 20,
         width: '100%',
+        height: 40
     },
     inputPassword: {
         flex: 1,
@@ -158,9 +207,10 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         paddingLeft: 20,
         width: '100%',
-        height: 50
+        height: 40
     },
     button: {
+        width: '100%',
         backgroundColor: commonStyles.colors.blueButtons,
         marginTop: 10,
         padding: 10,
@@ -183,6 +233,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#FFF',
         marginTop: 10,
-        borderRadius: 25
+        borderRadius: 25,
+        height: 40
     },
 })
