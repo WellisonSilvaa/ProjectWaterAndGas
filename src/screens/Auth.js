@@ -11,6 +11,7 @@ import {
 
 import backgroundImage from '../../assets/imgs/login.jpg'
 import commonStyles from '../commonStyles'
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default class Auth extends Component {
 
@@ -53,13 +54,38 @@ export default class Auth extends Component {
                         value={this.state.email}
                         onChangeText={email => this.setState({ email })}
                         style={styles.input}
+                        
                     />
-                    <TextInput
-                        placeholder='Senha'
-                        value={this.state.password}
-                        onChangeText={password => this.setState({ password })}
-                        style={styles.input}
-                    />
+                    <View style={ styles.inputContainer}>
+                        <TextInput
+                            placeholder='Senha'
+                            value={this.state.password}
+                            onChangeText={password => this.setState({ password })}
+                            style={styles.inputPassword}
+                        />
+                        <Pressable
+                            style={{
+                                width: '10%',
+                                height: 52,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginHorizontal: 'auto',
+                                borderTopEndRadius: 25,
+                                borderBottomEndRadius: 25
+                            }}
+                            onPress={() => console.log(ver)}
+                            
+                        >
+                            <Icon
+                                name={this.state.showDoneOrders
+                                    ? 'eye'
+                                    : 'eye-slash'
+                                }
+                                size={30}
+                                color='black'
+                            />
+                        </Pressable>
+                    </View>
                     {
                         this.state.stageNew &&
                         <TextInput
@@ -122,7 +148,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: Platform.OS === 'ios' ? 15 : 10,
         borderRadius: 25,
-        paddingLeft: 20
+        paddingLeft: 20,
+        width: '100%',
+    },
+    inputPassword: {
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: Platform.OS === 'ios' ? 15 : 10,
+        borderRadius: 25,
+        paddingLeft: 20,
+        width: '100%',
+        height: 50
     },
     button: {
         backgroundColor: commonStyles.colors.blueButtons,
@@ -140,5 +176,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
         padding: 10,
         alignItems: 'center'
-    }
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FFF',
+        marginTop: 10,
+        borderRadius: 25
+    },
 })
