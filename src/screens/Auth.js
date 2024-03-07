@@ -10,20 +10,61 @@ import {
     Alert
 } from 'react-native'
 
+import axios from 'axios';
+
+import Icon from "react-native-vector-icons/FontAwesome";
+
 import backgroundImage from '../../assets/imgs/login.jpg'
 import commonStyles from '../commonStyles'
-import Icon from "react-native-vector-icons/FontAwesome";
+import { server, showError, showSuccess } from '../common';
+
+const initialState ={
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    stageNew: false,
+    showPassword: true,
+    showConfirmPassword: true
+}
 
 export default class Auth extends Component {
 
     state = {
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        stageNew: false,
-        showPassword: true,
-        showConfirmPassword: true
+        ...initialState
+    }
+
+    signinOrSignup = () => {
+        if(this.state.stageNew) {
+            this.signup()
+        } else {
+            Alert.alert('Sucesso', 'Logar')
+        }
+    }
+
+    signup = async () => {
+        try {
+            console.log('fase 1')
+            console.log(
+                'Name = ',this.state.name,
+                'email: ', this.state.email,
+                'password: ', this.state.password,
+                'confirmPassword: ', this.state.confirmPassword,
+                'Server = ', server
+            )
+
+            await axios.post(`${server}/signup`, {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                confirmPassword: this.state.confirmPassword,
+            })
+            console.log('Persistencia concluida')
+            showSuccess('Usuário cadastrado')
+            this.setState({ ...initialState })
+        } catch(e) {
+            showError(e)
+        }
     }
 
     render() {
@@ -128,9 +169,7 @@ export default class Auth extends Component {
                         </View>
                     }
                     <Pressable
-                        onPress={() => {
-                            console.log('teste')
-                        }}
+                        onPress={this.signinOrSignup}
                     >
                         <View style={styles.button}>
                             <Text
@@ -154,7 +193,7 @@ export default class Auth extends Component {
                         <Text style={styles.buttonText}>
                             {
                                 this.state.stageNew
-                                    ? 'Logar'
+                                    ? 'Login'
                                     : 'Cadastrar'
                             }
                         </Text>
@@ -215,7 +254,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         padding: 10,
         alignItems: 'center',
-        borderRadius: 25,
+        borderRadius: 10,
     },
     buttonText: {
         fontFamily: commonStyles.fontFamily,
