@@ -82,6 +82,18 @@ export default class Auth extends Component {
     }
 
     render() {
+
+        const validations = []
+        validations.push(this.state.email && this.state.email.includes('@'))
+        validations.push(this.state.password && this.state.password.length >= 6)
+        
+        if(this.state.stageNew) {
+            validations.push(this.state.name && this.state.name.trim().length >= 3)
+            validations.push(this.state.confirmPasswordpassword === this.state.password)
+        }
+
+        const validForm = validations.reduce((t, a) => t && a)
+
         return (
             <ImageBackground
                 source={backgroundImage}
@@ -184,8 +196,9 @@ export default class Auth extends Component {
                     }
                     <Pressable
                         onPress={this.signinOrSignup}
+                        disabled={!validForm}
                     >
-                        <View style={styles.button}>
+                        <View style={[styles.button, validForm ? {} : {backgroundColor: '#AAA'}]}>
                             <Text
                                 style={styles.buttonText}
                             >
