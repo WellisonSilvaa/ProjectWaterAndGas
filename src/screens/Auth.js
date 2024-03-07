@@ -38,7 +38,7 @@ export default class Auth extends Component {
         if(this.state.stageNew) {
             this.signup()
         } else {
-            Alert.alert('Sucesso', 'Logar')
+            this.signin()
         }
     }
 
@@ -63,6 +63,20 @@ export default class Auth extends Component {
             showSuccess('Usuário cadastrado')
             this.setState({ ...initialState })
         } catch(e) {
+            showError(e)
+        }
+    }
+
+    signin = async () => {
+        try {
+            const res = await axios.post(`${server}/signin`, {
+                email: this.state.email,
+                password: this.state.password
+            })
+
+            axios.defaults.headers.common['Authorization'] = `bearer ${res.data.token}`
+            this.props.navigation.navigate('Home')
+        } catch (e) {
             showError(e)
         }
     }
@@ -233,7 +247,6 @@ const styles = StyleSheet.create({
     input: {
         marginTop: 10,
         backgroundColor: '#fff',
-        padding: Platform.OS === 'ios' ? 15 : 10,
         borderRadius: 25,
         paddingLeft: 20,
         width: '100%',
@@ -242,7 +255,6 @@ const styles = StyleSheet.create({
     inputPassword: {
         flex: 1,
         backgroundColor: '#fff',
-        padding: Platform.OS === 'ios' ? 15 : 10,
         borderRadius: 25,
         paddingLeft: 20,
         width: '100%',
