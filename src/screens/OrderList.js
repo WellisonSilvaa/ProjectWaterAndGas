@@ -3,9 +3,13 @@ import { View, Text, ImageBackground, StyleSheet, FlatList, Pressable, Keyboard 
 import moment from "moment";
 import 'moment/locale/pt-br'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIonic from "react-native-vector-icons/Ionicons"
+
 import Requests from "../components/Requests";
+import { server, showError } from '../common'
 import commonStyles from "../commonStyles";
 import month from '../../assets/imgs/month.jpg'
 import AddOrder from "./AddOrder";
@@ -28,8 +32,10 @@ export default class OrderList extends Component {
 
     componentDidMount = async () => {
         const stateString = await AsyncStorage.getItem('ordersState')
-        const state = JSON.parse(stateString) || initialState
-        this.setState(state, this.filterOrders)
+        const savedState = JSON.parse(stateString) || initialState
+        this.setState({
+            showDoneOrders: savedState.showDoneOrders
+        }, this.filterOrders)
     }
 
     toogleFilter = () => {
@@ -45,7 +51,9 @@ export default class OrderList extends Component {
             visibleOrders = this.state.orders.filter(pending)
         }
         this.setState({ visibleOrders })
-        AsyncStorage.setItem('ordersState', JSON.stringify(this.state))
+        AsyncStorage.setItem('ordersState', JSON.stringify({
+            showDoneOrders: this.state.showDoneOrders
+        }))
     }
 
     showDeleteOrder = id => {

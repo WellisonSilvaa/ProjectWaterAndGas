@@ -18,10 +18,10 @@ import backgroundImage from '../../assets/imgs/login.jpg'
 import commonStyles from '../commonStyles'
 import { server, showError, showSuccess } from '../common';
 
-const initialState ={
+const initialState = {
     name: '',
-    email: '',
-    password: '',
+    email: 'wonsilva100@gmail.com',
+    password: '123456',
     confirmPassword: '',
     stageNew: false,
     showPassword: true,
@@ -35,7 +35,7 @@ export default class Auth extends Component {
     }
 
     signinOrSignup = () => {
-        if(this.state.stageNew) {
+        if (this.state.stageNew) {
             this.signup()
         } else {
             this.signin()
@@ -46,7 +46,7 @@ export default class Auth extends Component {
         try {
             console.log('fase 1')
             console.log(
-                'Name = ',this.state.name,
+                'Name = ', this.state.name,
                 'email: ', this.state.email,
                 'password: ', this.state.password,
                 'confirmPassword: ', this.state.confirmPassword,
@@ -62,7 +62,7 @@ export default class Auth extends Component {
             console.log('Persistencia concluida')
             showSuccess('Usuário cadastrado')
             this.setState({ ...initialState })
-        } catch(e) {
+        } catch (e) {
             showError(e)
         }
     }
@@ -86,8 +86,8 @@ export default class Auth extends Component {
         const validations = []
         validations.push(this.state.email && this.state.email.includes('@'))
         validations.push(this.state.password && this.state.password.length >= 6)
-        
-        if(this.state.stageNew) {
+
+        if (this.state.stageNew) {
             validations.push(this.state.name && this.state.name.trim().length >= 3)
             validations.push(this.state.confirmPasswordpassword === this.state.password)
         }
@@ -194,11 +194,12 @@ export default class Auth extends Component {
                             </Pressable>
                         </View>
                     }
+                    {/* Botao Entrar ou Cadastrar */}
                     <Pressable
                         onPress={this.signinOrSignup}
                         disabled={!validForm}
                     >
-                        <View style={[styles.button, validForm ? {} : {backgroundColor: '#AAA'}]}>
+                        <View style={[styles.button, validForm ? {} : { backgroundColor: '#AAA' }]}>
                             <Text
                                 style={styles.buttonText}
                             >
@@ -211,20 +212,21 @@ export default class Auth extends Component {
                         </View>
                     </Pressable>
                 </View>
+                {/* Botao que alterna o formulario, signin or signup */}
                 <Pressable
-                        style={styles.buttonSignup}
-                        onPress={() => {
-                            this.setState({ stageNew: !this.state.stageNew })
-                        }}
-                    >
-                        <Text style={styles.buttonText}>
-                            {
-                                this.state.stageNew
-                                    ? 'Login'
-                                    : 'Cadastrar'
-                            }
-                        </Text>
-                    </Pressable>
+                    style={styles.buttonSignup}
+                    onPress={() => {
+                        this.setState({ stageNew: !this.state.stageNew })
+                    }}
+                >
+                    <Text style={styles.buttonText}>
+                        {
+                            this.state.stageNew
+                                ? 'Login'
+                                : 'Cadastrar'
+                        }
+                    </Text>
+                </Pressable>
             </ImageBackground>
         )
     }
