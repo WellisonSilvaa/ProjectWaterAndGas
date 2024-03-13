@@ -36,6 +36,18 @@ export default class OrderList extends Component {
         this.setState({
             showDoneOrders: savedState.showDoneOrders
         }, this.filterOrders)
+
+        this.loadOrders()
+    }
+
+    loadOrders = async () => {
+        try {
+            const maxDate = moment().endOf('day').toDate()
+            const res = await axios.get(`${server}/orders?date=${maxDate}`)
+            this.setState({ orders: res.data }, this.filterOrders)
+        } catch (e) {
+            showError(e)
+        }
     }
 
     toogleFilter = () => {

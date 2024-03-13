@@ -22,7 +22,7 @@ const initialState = {
     name: '',
     email: 'wonsilva100@gmail.com',
     password: '123456',
-    confirmPassword: '',
+    confirmPassword: '123456',
     stageNew: false,
     showPassword: true,
     showConfirmPassword: true
@@ -89,7 +89,7 @@ export default class Auth extends Component {
 
         if (this.state.stageNew) {
             validations.push(this.state.name && this.state.name.trim().length >= 3)
-            validations.push(this.state.confirmPasswordpassword === this.state.password)
+            validations.push(this.state.confirmPassword === this.state.password)
         }
 
         const validForm = validations.reduce((t, a) => t && a)
