@@ -87,7 +87,7 @@ export default class OrderList extends Component {
 
     }
 
-    toggleOrder = orderId => {
+    toggleOrder = async orderId => {
         const orders = [...this.state.orders]
         orders.forEach(order => {
             if (order.id === orderId) {
@@ -96,7 +96,13 @@ export default class OrderList extends Component {
                     : new Date
             }
         })
-        this.setState({ orders }, this.filterOrders)
+        this.setState({ orders })
+        try {
+            await axios.put(`${server}/orders/${orderId}/toggle`)
+            await this.loadOrders()
+        } catch (e) {
+            showError(e)
+        }
     }
 
     handlePressOutsideModal = (event) => {
