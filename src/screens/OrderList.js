@@ -42,7 +42,7 @@ export default class OrderList extends Component {
 
     loadOrders = async () => {
         try {
-            const maxDate = moment().endOf('day').toDate()
+            const maxDate = moment().format('YYYY-MM-DD 23:59:59')
             const res = await axios.get(`${server}/orders?date=${maxDate}`)
             this.setState({ orders: res.data }, this.filterOrders)
         } catch (e) {
@@ -100,24 +100,29 @@ export default class OrderList extends Component {
         }
     };
 
-    addOrder = newOrder => {
-        const orders = [...this.state.orders]
-        orders.push({
-            id: Math.random(),
-            client: newOrder.client,
-            product: newOrder.product,
-            quantity: newOrder.quantity,
-            product2: newOrder.product2,
-            quantity2: newOrder.quantity2,
-            orderTime: newOrder.orderTime,
-            formPayment: newOrder.formPayment,
-            change: newOrder.change,
-            creditOrDebit: newOrder.creditOrDebit,
-            customerAddress: newOrder.customerAddress,
-            additionalInfo: newOrder.additionalInfo,
-            doneAt: null
-        })
-        this.setState({ orders, showAddOrders: false }, this.filterOrders)
+    addOrder = async newOrder => {
+
+        try {
+            await axios.post(`${server}/orders`, {
+                id: Math.random(),
+                client: newOrder.client,
+                product: newOrder.product,
+                quantity: newOrder.quantity,
+                product2: newOrder.product2,
+                quantity2: newOrder.quantity2,
+                orderTime: newOrder.orderTime,
+                formPayment: newOrder.formPayment,
+                change: newOrder.change,
+                creditOrDebit: newOrder.creditOrDebit,
+                customerAddress: newOrder.customerAddress,
+                additionalInfo: newOrder.additionalInfo,
+                doneAt: null
+            })
+            this.setState({ showAddOrders: false }, this.loadOrders)
+        } catch (e) {
+            showError(e)
+        }
+
     }
 
     render() {
