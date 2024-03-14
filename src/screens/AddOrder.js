@@ -14,7 +14,7 @@ const initialState = {
     product2: '',
     quantity: '',
     quantity2: '',
-    orderTime: new Date('AAAA-MM-DD HH:MM:SS'),
+    orderTime: new Date(),
     formPayment: 'Dinheiro',
     change: '',
     creditOrDebit: 'Crédito',

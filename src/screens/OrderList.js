@@ -74,10 +74,16 @@ export default class OrderList extends Component {
         this.setState({ showDeletOrder: true, idDelete: newArray })
     }
 
-    onDelete = () => {
+    onDelete = async () => {
         const id = this.state.idDelete
-        const orders = this.state.orders.filter(order => order.id !== id);
-        this.setState({ orders, showDeletOrder: false }, this.filterOrders);
+        
+        try {
+            await axios.delete(`${server}/orders/${id}`)
+        } catch (e) {
+            showError(e)
+        }
+
+        this.setState({ showDeletOrder: false }, this.loadOrders);
 
     }
 
@@ -101,6 +107,18 @@ export default class OrderList extends Component {
     };
 
     addOrder = async newOrder => {
+        const currentDate = newOrder.orderTime;
+        const formattedDate = moment(currentDate).format('YYYY-MM-DD HH:mm:ss');
+
+        if(newOrder.quantity === '' || !newOrder.quantity.trim()) {
+            newOrder.quantity = 0
+        }
+        if(newOrder.quantity2 === '' || !newOrder.quantity2.trim()) {
+            newOrder.quantity2 = 0
+        }
+        if(newOrder.change === '' || !newOrder.change.trim()) {
+            newOrder.change = 0
+        }
 
         try {
             await axios.post(`${server}/orders`, {
@@ -110,7 +128,7 @@ export default class OrderList extends Component {
                 quantity: newOrder.quantity,
                 product2: newOrder.product2,
                 quantity2: newOrder.quantity2,
-                orderTime: newOrder.orderTime,
+                orderTime: formattedDate,
                 formPayment: newOrder.formPayment,
                 change: newOrder.change,
                 creditOrDebit: newOrder.creditOrDebit,
