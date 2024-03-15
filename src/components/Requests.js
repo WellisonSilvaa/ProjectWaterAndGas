@@ -13,16 +13,13 @@ export default props => {
         }
         : {}
 
-    const clickLong = () => {
-        console.log('excluir')
-    }
 
     const formatteDate = moment(props.orderTime).locale('pt-br').format('llll')
 
     return (
         <View style={doneOrNotStyle}>
             <Pressable
-                onPress={() => { console.log('Editar') }}
+                onPress={() => props.getOrder(props.id)}
                 onLongPress={() => props.showDeleteOrder(props.id)}
                 delayLongPress={500}
                 style={({ pressed }) => ({

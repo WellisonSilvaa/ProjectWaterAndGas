@@ -21,7 +21,8 @@ const initialState = {
     showDeletOrder: false,
     idDelete: '',
     visibleOrders: [],
-    orders: []
+    orders: [],
+    order: []
 }
 
 export default class OrderList extends Component {
@@ -38,6 +39,18 @@ export default class OrderList extends Component {
         }, this.filterOrders)
 
         this.loadOrders()
+    }
+
+    getOrder = async id => {
+        console.log('teste = ', id)
+        // const orderId = id
+        // try {
+        //   const res = await axios.get(`${server}/orders/${orderId}`) 
+        //   this.setState({ order: res.data}) 
+        //   console.log(order)
+        // } catch (e) {
+        //     showError(e)
+        // }
     }
 
     loadOrders = async () => {
@@ -149,6 +162,7 @@ export default class OrderList extends Component {
 
     }
 
+
     render() {
         const today = moment().locale('pt-br ').format('ddd, D [de] MMMM',)
         return (
@@ -196,6 +210,7 @@ export default class OrderList extends Component {
                             <Requests {...item}
                                 toggleOrder={this.toggleOrder}
                                 showDeleteOrder={this.showDeleteOrder}
+                                getOrder={this.getOrder}
                             />}
                     />
                 </View>
