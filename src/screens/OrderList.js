@@ -22,7 +22,7 @@ const initialState = {
     idDelete: '',
     visibleOrders: [],
     orders: [],
-    order: []
+    order: [],
 }
 
 export default class OrderList extends Component {
@@ -43,14 +43,17 @@ export default class OrderList extends Component {
 
     getOrder = async id => {
         console.log('teste = ', id)
-        // const orderId = id
-        // try {
-        //   const res = await axios.get(`${server}/orders/${orderId}`) 
-        //   this.setState({ order: res.data}) 
-        //   console.log(order)
-        // } catch (e) {
-        //     showError(e)
-        // }
+        const orderId = id
+        try {
+          const res = await axios.get(`${server}/orders/${orderId}`) 
+          this.setState({ order: res.data[0] })
+          console.log(this.state.order) 
+          const pedido = this.state.order
+          this.props.navigation.navigate('AddOrders', { pedido })
+        //   console.log(this.state.order)
+        } catch (e) {
+            showError(e)
+        }
     }
 
     loadOrders = async () => {
@@ -172,6 +175,7 @@ export default class OrderList extends Component {
                     onCancelOutModal={this.handlePressOutsideModal}
                     onCancel={() => this.setState({ showAddOrders: false })}
                     onSave={this.addOrder}
+                    order={this.state.order}
                 />
                 <DeletOrder
                     isVisible={this.state.showDeletOrder}

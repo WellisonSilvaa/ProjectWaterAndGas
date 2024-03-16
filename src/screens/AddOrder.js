@@ -23,16 +23,18 @@ const initialState = {
     additionalInfo: ''
 }
 
-// componentDidMount = () => {
-//     this.changeState()
-// }
-
-
 
 export default class addOrder extends Component {
 
     state = {
         ...initialState
+    }
+
+    verifyOrder = () => {
+        if(this.props.order){
+            const order = this.props.order
+            this.setState({ initialState: order})
+        }
     }
 
     save = () => {
@@ -75,6 +77,8 @@ export default class addOrder extends Component {
     }
 
     render() {
+
+       
         return (
             <Modal
                 transparent={true}
@@ -280,14 +284,6 @@ export default class addOrder extends Component {
     }
 }
 
-const CardPaymentMethod = () => {
-    return (
-        <View>
-
-
-        </View>
-    )
-}
 
 const styles = StyleSheet.create({
     background: {
