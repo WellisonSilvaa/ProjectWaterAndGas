@@ -1,12 +1,20 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import ButtonsAddDel from "./buttonsAddDel";
 
 export default props => {
     return (
         <View style={styles.container}>
             <View style={styles.features}>
                 <Text>{props.product}</Text>
-                <Text>{props.value}</Text>
+                <Text>R${props.value} reais</Text>
+            </View>
+            <View>
+                <ButtonsAddDel
+                    inc={props.inc}
+                    dec={props.dec}
+                    num={props.num}
+                />
             </View>
         </View>
     )

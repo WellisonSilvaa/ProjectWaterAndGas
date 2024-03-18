@@ -61,6 +61,7 @@ export default class OrderList extends Component {
             const maxDate = moment().format('YYYY-MM-DD 23:59:59')
             const res = await axios.get(`${server}/orders?date=${maxDate}`)
             this.setState({ orders: res.data }, this.filterOrders)
+            console.log("teste", this.state.orders)
         } catch (e) {
             showError(e)
         }
