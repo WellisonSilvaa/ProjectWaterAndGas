@@ -3,6 +3,8 @@ import { Modal, View, StyleSheet, Pressable, Text, TextInput } from 'react-nativ
 import commonStyles from '../commonStyles'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Picker } from '@react-native-picker/picker';
+import { RadioButton } from 'react-native-paper';
+
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import IconIonic from "react-native-vector-icons/Ionicons"
@@ -31,9 +33,9 @@ export default class addOrder extends Component {
     }
 
     verifyOrder = () => {
-        if(this.props.order){
+        if (this.props.order) {
             const order = this.props.order
-            this.setState({ initialState: order})
+            this.setState({ initialState: order })
         }
     }
 
@@ -78,7 +80,7 @@ export default class addOrder extends Component {
 
     render() {
 
-       
+
         return (
             <Modal
                 transparent={true}
@@ -110,7 +112,19 @@ export default class addOrder extends Component {
                                     value={this.state.quantity}
                                     keyboardType='numeric'
                                 />
-                                <Picker
+                                <RadioButton.Group 
+                                    onValueChange={product => this.setState(product)} 
+                                    value={this.state.product}>
+                                    <View>
+                                        <Text>First</Text>
+                                        <RadioButton value="first" />
+                                    </View>
+                                    <View>
+                                        <Text>Second</Text>
+                                        <RadioButton value="second" />
+                                    </View>
+                                </RadioButton.Group>
+                                {/* <Picker
                                     style={styles.inputPicker}
                                     selectedValue={this.state.product}
                                     onValueChange={product => this.setState({ product })}
@@ -121,7 +135,7 @@ export default class addOrder extends Component {
                                     <Picker.Item label='Água s/ gás 510ml' value='Água s/ gás 510ml' />
                                     <Picker.Item label='Água c/ gás 1L' value='Água c/ gás 1L' />
                                     <Picker.Item label='Água c/ gás 1L' value='Água s/ gás 1L' />
-                                </Picker>
+                                </Picker> */}
                                 <Pressable
                                     style={{
                                         // backgroundColor: "red",

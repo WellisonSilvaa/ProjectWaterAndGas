@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const Navigator = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Auth">
+            <Stack.Navigator initialRouteName="Home">
                 <Stack.Screen name="Auth" component={Auth}  options={{ headerShown: false }} />
                 <Stack.Screen name="Home" component={OrderList}  options={{ headerShown: false }} />
                 <Stack.Screen name="AddOrders" component={AddOrders} options={{ title: 'Adicionar Pedido'}}/>
